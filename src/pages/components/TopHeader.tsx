@@ -14,7 +14,7 @@ import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { position } from '@chakra-ui/react';
 
-const settings = ['プロフィール', 'ログアウト'];
+const settings = ['設定', 'ログアウト'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
