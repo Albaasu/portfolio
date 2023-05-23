@@ -5,18 +5,19 @@ import CardHeader from '@mui/material/CardHeader';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
-import Collapse from '@mui/material/Collapse';
+
 import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 
+// IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
   expand: boolean;
 }
@@ -33,19 +34,17 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export default function TweetBox() {
-
   const [favo, setFavo] = React.useState(false);
 
   const handleFavo = () => {
     setFavo(!favo);
   };
 
-
-
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
-      <Card sx={{ maxWidth: 800, minWidth: 700 }}>
+      <Card>
         <CardHeader
+          sx={{ marginBottom: -2 }}
           avatar={
             <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
               K
@@ -53,22 +52,31 @@ export default function TweetBox() {
           }
           action={
             <IconButton aria-label='settings'>
-              <DeleteIcon sx={{color:red[500]}} />
+              <DeleteIcon sx={{ color: red[500] }} />
             </IconButton>
           }
-          title='UserName'
-          subheader='September 14, 2023'
+          title='ユーザー名'
+          subheader='2023年9月14日'
         />
         <CardContent>
-          <Typography variant='subtitle1' color='.MuiTab-labelIcon'sx={{px:3}}>
-            つみあげったーの投稿です。
+          <Typography
+            variant='subtitle1'
+            color='.MuiTab-labelIcon'
+            sx={{ px: 3 }}
+          >
+            つみあげったー
           </Typography>
         </CardContent>
         <CardMedia
+          sx={{
+            p: 1,
+            borderRadius: 3,
+            objectFit: 'contain',
+            maxWidth: 700,
+            maxHeight: 500, // 画像の最大高さを700に
+          }}
           component='img'
-          height='100%'
-          width="100%"
-          image=' https://source.unsplash.com/random'
+          image='https://source.unsplash.com/random'
           alt='Paella dish'
         />
         <CardActions disableSpacing>

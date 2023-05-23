@@ -1,6 +1,7 @@
 import { Box, Container, Stack } from '@mui/material';
 import React from 'react';
 import TweetBox from './TweetBox';
+import TweetAera from './TweetArea';
 
 const Timeline = () => {
   return (
@@ -14,6 +15,7 @@ const Timeline = () => {
           }}
         >
           <Stack spacing={2}>
+           <TweetAera/>
             <TweetBox />
             <TweetBox />
             <TweetBox />

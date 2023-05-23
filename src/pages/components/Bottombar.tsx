@@ -2,12 +2,12 @@ import Box from '@mui/material/Box';
 import React, { useState } from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-import RestoreIcon from '@mui/icons-material/Restore';
+
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ArchiveIcon from '@mui/icons-material/Archive';
+
 import Paper from '@mui/material/Paper';
 import HomeIcon from '@mui/icons-material/Home';
-import ControlPointIcon from '@mui/icons-material/ControlPoint';
+
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
 
