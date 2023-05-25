@@ -15,13 +15,11 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { registerEmailState } from './Recoil/atom';
 import { registerPasswordState } from './Recoil/atom';
-import { registerUserState } from './Recoil/atom';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
 } from 'firebase/auth';
 import { auth, db } from '../../firebase';
-import { doc, setDoc } from 'firebase/firestore';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
@@ -34,7 +32,6 @@ const theme = createTheme({
 });
 
 export default function Signin() {
-  //ログイン
   const router = useRouter();
 
   const [registerEmail, setRegisterEmail] =
