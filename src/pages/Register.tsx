@@ -11,17 +11,19 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
-import { onAuthStateChanged, signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
-import { useRecoilState } from 'recoil';
-
 import { useRouter } from 'next/router';
+import { useRecoilState } from 'recoil';
+import { registerEmailState } from './Recoil/atom';
+import { registerPasswordState } from './Recoil/atom';
+import { registerUserState } from './Recoil/atom';
 import {
-  loginEmailState,
-  loginPasswordState,
-  loginUserState,
-} from './Recoil/atom';
+  createUserWithEmailAndPassword,
+  onAuthStateChanged,
+} from 'firebase/auth';
+import { auth, db } from '../../firebase';
+import { doc, setDoc } from 'firebase/firestore';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 const theme = createTheme({
   palette: {
@@ -32,28 +34,45 @@ const theme = createTheme({
 });
 
 export default function Signin() {
-  const [error, setError] = React.useState('');
   //ログイン
   const router = useRouter();
 
-  const [loginEmail, setLoginEmail] = useRecoilState<string>(loginEmailState);
-  const [loginPassword, setLoginPassword] =
-    useRecoilState<string>(loginPasswordState);
-  const [loginUser, setLoginUser] = useRecoilState<string>(loginUserState);
+  const [registerEmail, setRegisterEmail] =
+    useRecoilState<string>(registerEmailState);
 
-  const handleLoginClick = async (e: any) => {
+  const [registerPassword, setRegisterPassword] = useRecoilState<string>(
+    registerPasswordState
+  );
+
+  const [user, setUser] = useState<any>(null);
+
+  const [error, setError] = React.useState('');
+
+  useEffect(() => {
+    onAuthStateChanged(auth, (currentUser: any) => {
+      setUser(currentUser);
+    });
+  }, []);
+
+  //新規登録
+  const addUser = async (e: any) => {
     e.preventDefault();
 
     try {
-      await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      await createUserWithEmailAndPassword(
+        auth,
+        registerEmail,
+        registerPassword
+      );
       onAuthStateChanged(auth, (currentUser: any) => {
-        setLoginUser(currentUser);
+        setUser(currentUser);
       });
-      router.push('/main');
+      router.push('/');
     } catch (error) {
       setError('正しく入力してください');
     }
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component='main' maxWidth='xs'>
@@ -70,7 +89,7 @@ export default function Signin() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component='h1' variant='h5'>
-            ログイン
+            新規登録
           </Typography>
           <Box component='form' noValidate sx={{ mt: 1 }}>
             <TextField
@@ -82,8 +101,8 @@ export default function Signin() {
               name='email'
               autoComplete='email'
               autoFocus
-              value={loginEmail}
-              onChange={(e) => setLoginEmail(e.target.value)}
+              value={registerEmail}
+              onChange={(e) => setRegisterEmail(e.target.value)}
             />
             <TextField
               margin='normal'
@@ -94,8 +113,8 @@ export default function Signin() {
               type='password'
               id='password'
               autoComplete='current-password'
-              value={loginPassword}
-              onChange={(e) => setLoginPassword(e.target.value)}
+              value={registerPassword}
+              onChange={(e) => setRegisterPassword(e.target.value)}
             />
 
             {error && (
@@ -109,9 +128,9 @@ export default function Signin() {
               fullWidth
               variant='outlined'
               sx={{ mt: 2, mb: 2 }}
-              onClick={handleLoginClick}
+              onClick={addUser}
             >
-              ログイン
+              新規登録
             </Button>
 
             <Grid container>
@@ -121,8 +140,8 @@ export default function Signin() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='Register' variant='body1'>
-                  新規登録
+                <Link href='/Signin' variant='body1'>
+                  ログイン
                 </Link>
               </Grid>
             </Grid>
