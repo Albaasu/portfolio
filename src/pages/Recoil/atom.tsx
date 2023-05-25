@@ -13,10 +13,6 @@ export const loginPasswordState = atom<string>({
   default: '',
 });
 
-export const registerUserState = atom<string>({
-  key: 'registerUserState',
-  default: '',
-});
 export const registerEmailState = atom<string>({
   key: 'registerEmailState',
   default: '',
