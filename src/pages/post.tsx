@@ -4,7 +4,7 @@ import TopHeader from '../components/TopHeader';
 
 const inter = Inter({ subsets: ['latin'] });
 
-export default function post() {
+export default function Post() {
   return (
     <>
       <TopHeader />

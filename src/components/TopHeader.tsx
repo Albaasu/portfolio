@@ -5,27 +5,17 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
-
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
 import { auth } from '../../firebase';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { useEffect } from 'react';
 
-import { useRecoilState } from 'recoil';
-
-function ResponsiveAppBar() {
-  const [user] = useAuthState(auth);
+function TopHeader() {
   const router = useRouter();
-
-
 
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
@@ -41,8 +31,6 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
-
 
   //ログアウト
 
@@ -97,7 +85,9 @@ function ResponsiveAppBar() {
           >
             <Tooltip title='プロフィール'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt='Remy Sharp' src='/static/images/avatar/2.jpg' />
+              <Avatar sx={{ bgcolor: "lightblue" }} aria-label="recipe">
+                  K
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
@@ -132,4 +122,4 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
-export default ResponsiveAppBar;
+export default TopHeader;
