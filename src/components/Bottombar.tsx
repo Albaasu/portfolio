@@ -2,12 +2,9 @@ import Box from '@mui/material/Box';
 import React, { useState } from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
-
 import FavoriteIcon from '@mui/icons-material/Favorite';
-
 import Paper from '@mui/material/Paper';
 import HomeIcon from '@mui/icons-material/Home';
-
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
 
@@ -16,11 +13,11 @@ export default function Bottombar() {
   const ref = React.useRef<HTMLDivElement>(null);
   const path = useRouter().pathname;
   React.useEffect(() => {
-    if (path === '/') {
+    if (path === '/Main') {
       setValue(0);
-    } else if (path === '/favorite') {
+    } else if (path === '/Favorite') {
       setValue(1);
-    } else if (path === '/mypage') {
+    } else if (path === '/Mypage') {
       setValue(2);
     }
   }, [path]);
@@ -38,17 +35,21 @@ export default function Bottombar() {
             setValue(newValue);
           }}
         >
-          <BottomNavigationAction label='ホーム' icon={<HomeIcon />} href='/' />
+          <BottomNavigationAction
+            label='ホーム'
+            icon={<HomeIcon />}
+            href='/Main'
+          />
 
           <BottomNavigationAction
             label='いいね'
             icon={<FavoriteIcon />}
-            href='/favorite'
+            href='/Favorite'
           />
           <BottomNavigationAction
             label='マイページ'
             icon={<PersonIcon />}
-            href='/mypage'
+            href='/Mypage'
           />
         </BottomNavigation>
       </Paper>

@@ -13,8 +13,8 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { registerEmailState } from './Recoil/atom';
-import { registerPasswordState } from './Recoil/atom';
+import { registerEmailState } from './Recoil/Atom';
+import { registerPasswordState } from './Recoil/Atom';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -132,7 +132,7 @@ export default function Signin() {
 
             <Grid container>
               <Grid item xs>
-                <Link href='#' variant='body1'>
+                <Link href='Forget' variant='body1'>
                   パスワードを忘れた
                 </Link>
               </Grid>

@@ -5,16 +5,28 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
-
+import MenuIcon from '@mui/icons-material/Menu';
 import Container from '@mui/material/Container';
 import Avatar from '@mui/material/Avatar';
-
+import Button from '@mui/material/Button';
 import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 
-const settings = ['設定', 'ログアウト'];
+import SettingsIcon from '@mui/icons-material/Settings';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useRouter } from 'next/router';
+import { auth } from '../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useEffect } from 'react';
+
+import { useRecoilState } from 'recoil';
 
 function ResponsiveAppBar() {
+  const [user] = useAuthState(auth);
+  const router = useRouter();
+
+
+
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
     null
   );
@@ -28,6 +40,15 @@ function ResponsiveAppBar() {
 
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
+  };
+
+
+
+  //ログアウト
+
+  const handleLogout = async () => {
+    await auth.signOut();
+    router.push('/');
   };
 
   return (
@@ -95,11 +116,15 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign='center'>{setting}</Typography>
+              <Box>
+                <MenuItem>
+                  <SettingsIcon sx={{ mr: 2 }} /> 設定
                 </MenuItem>
-              ))}
+                <MenuItem onClick={handleLogout}>
+                  <LogoutIcon sx={{ mr: 2 }} />
+                  ログアウト
+                </MenuItem>
+              </Box>
             </Menu>
           </Box>
         </Toolbar>
