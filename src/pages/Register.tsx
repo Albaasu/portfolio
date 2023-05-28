@@ -10,11 +10,10 @@ import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { registerEmailState } from './Recoil/Atom';
-import { registerPasswordState } from './Recoil/Atom';
+import { registerEmailState } from '../Recoil/Atom';
+import { registerPasswordState } from '../Recoil/Atom';
 import {
   createUserWithEmailAndPassword,
   onAuthStateChanged,
@@ -23,13 +22,6 @@ import { auth, db } from '../../firebase';
 import { useEffect } from 'react';
 import { useState } from 'react';
 
-const theme = createTheme({
-  palette: {
-    background: {
-      default: '#f0f0f0', // 背景色
-    },
-  },
-});
 
 export default function Signin() {
   const router = useRouter();
@@ -41,15 +33,8 @@ export default function Signin() {
     registerPasswordState
   );
 
-  const [user, setUser] = useState<any>(null);
 
   const [error, setError] = React.useState('');
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (currentUser: any) => {
-      setUser(currentUser);
-    });
-  }, []);
 
   //新規登録
   const addUser = async (e: any) => {
@@ -61,9 +46,6 @@ export default function Signin() {
         registerEmail,
         registerPassword
       );
-      onAuthStateChanged(auth, (currentUser: any) => {
-        setUser(currentUser);
-      });
       router.push('/');
     } catch (error) {
       setError('正しく入力してください');
@@ -71,7 +53,6 @@ export default function Signin() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
       <Container component='main' maxWidth='xs'>
         <CssBaseline />
         <Box
@@ -145,6 +126,5 @@ export default function Signin() {
           </Box>
         </Box>
       </Container>
-    </ThemeProvider>
   );
 }

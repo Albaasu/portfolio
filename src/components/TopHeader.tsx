@@ -13,13 +13,13 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
 import { auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
 
 function TopHeader() {
   const router = useRouter();
+  const user = auth.currentUser;
+  console.log(user);
 
-  const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(
-    null
-  );
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
   );
@@ -34,9 +34,14 @@ function TopHeader() {
 
   //ログアウト
 
-  const handleLogout = async () => {
-    await auth.signOut();
-    router.push('/');
+  const handleLogout = async (e:any) => {
+    e.preventDefault();
+    try {
+      await signOut(auth);
+      router.push('/');
+    } catch (error) {
+      alert(error);
+    }
   };
 
   return (
@@ -85,7 +90,7 @@ function TopHeader() {
           >
             <Tooltip title='プロフィール'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar sx={{ bgcolor: "lightblue" }} aria-label="recipe">
+                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
                   K
                 </Avatar>
               </IconButton>
