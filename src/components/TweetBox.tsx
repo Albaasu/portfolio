@@ -16,6 +16,9 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../../firebase';
+
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -35,10 +38,19 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function TweetBox() {
   const [favo, setFavo] = React.useState(false);
-
+  //いいね色
   const handleFavo = () => {
     setFavo(!favo);
   };
+
+  //投稿取得
+  const postDate:any = collection(db, 'posts');
+  getDocs(postDate).then((querySnapshot:any) => {
+    querySnapshot.forEach((doc:any) => {
+      console.log(doc.id, ' => ', doc.data());
+    });
+  });
+
 
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>

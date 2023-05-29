@@ -19,6 +19,7 @@ import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
 
 export default function Signin() {
   const [error, setError] = React.useState('');
+
   //ログイン
   const router = useRouter();
 
@@ -30,6 +31,8 @@ export default function Signin() {
     e.preventDefault();
     try {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
+      setLoginEmail('');
+      setLoginPassword('');
       router.push('/Main');
     } catch (error) {
       setError('正しく入力してください');

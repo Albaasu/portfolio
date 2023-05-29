@@ -13,12 +13,12 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
 import { auth } from '../../firebase';
-import { signOut } from 'firebase/auth';
+import { onAuthStateChanged, onIdTokenChanged, signOut } from 'firebase/auth';
 
 function TopHeader() {
   const router = useRouter();
   const user = auth.currentUser;
-  console.log(user);
+  const [loginState, setLoginState] = React.useState<any>(null);
 
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
     null
@@ -32,9 +32,17 @@ function TopHeader() {
     setAnchorElUser(null);
   };
 
+  // ログイン監視
+  React.useEffect(() => {
+    const unSub = onAuthStateChanged(auth, (user) => {
+      !user && router.push('/');
+    });
+    return () => unSub();
+  }, [router]);
+
   //ログアウト
 
-  const handleLogout = async (e:any) => {
+  const handleLogout = async (e: any) => {
     e.preventDefault();
     try {
       await signOut(auth);

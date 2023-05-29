@@ -46,6 +46,8 @@ export default function Signin() {
         registerEmail,
         registerPassword
       );
+      setRegisterEmail('');
+      setRegisterPassword('');
       router.push('/');
     } catch (error) {
       setError('正しく入力してください');
