@@ -12,15 +12,13 @@ const Timeline = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            
           }}
         >
-          <Stack spacing={2}>
+          <Stack spacing={2} >
            <TweetAera/>
             <TweetBox />
-            <TweetBox />
-            <TweetBox />
-            <TweetBox />
-            <TweetBox />
+       
           </Stack>
         </Container>
       </Box>

@@ -16,9 +16,10 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { collection, getDocs } from 'firebase/firestore';
-import { db } from '../../firebase';
-
+import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import { auth, db } from '../../firebase';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { useRecoilState } from 'recoil';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -38,76 +39,112 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function TweetBox() {
   const [favo, setFavo] = React.useState(false);
-  //いいね色
+  const [posts, setPosts] = React.useState<any[]>([]);
+  const [user] = useAuthState(auth);
+
+  // いいね色
   const handleFavo = () => {
     setFavo(!favo);
   };
 
-  //投稿取得
-  const postDate:any = collection(db, 'posts');
-  getDocs(postDate).then((querySnapshot:any) => {
-    querySnapshot.forEach((doc:any) => {
-      console.log(doc.id, ' => ', doc.data());
-    });
-  });
+  React.useEffect(() => {
+    if (!user) return;
 
+    const postsRef = collection(db, 'users', user.uid, 'posts');
+    const unsubscribe = onSnapshot(postsRef, (snapshot) => {
+      const listPosts: any[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const post = {
+          id: doc.id,
+          ...data,
+        };
+        listPosts.push(post);
+      });
+      setPosts(listPosts);
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, [user]);
+
+  const formatText = (text: string) => {
+    return text.split('\n').map((line, index) => (
+      <Typography
+        variant='subtitle1'
+        color='.MuiTab-labelIcon'
+        sx={{ px: 3 }}
+        key={index}
+      >
+        {line}
+        <br />
+      </Typography>
+    ));
+  };
 
   return (
-    <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
-      <Card>
-        <CardHeader
-          sx={{ marginBottom: -2 }}
-          avatar={
-            <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
-              K
-            </Avatar>
-          }
-          action={
-            <IconButton aria-label='settings'>
-              <DeleteIcon sx={{ color: red[500] }} />
-            </IconButton>
-          }
-          title='ユーザー名'
-          subheader='2023年9月14日'
-        />
-        <CardContent>
-          <Typography
-            variant='subtitle1'
-            color='.MuiTab-labelIcon'
-            sx={{ px: 3 }}
-          >
-            つみあげったー
-          </Typography>
-        </CardContent>
-        <CardMedia
+    <>
+      {posts.map((post: any) => (
+        <Box
           sx={{
-            p: 1,
-            borderRadius: 3,
-            objectFit: 'contain',
-            maxWidth: 700,
-            maxHeight: 500, // 画像の最大高さを700に
+            backgroundColor: '#f1f1f1',
+            padding: '1rem',
+            maxWidth: 733,
+            minWidth: 733,
           }}
-          component='img'
-          image='https://source.unsplash.com/random'
-          alt='Paella dish'
-        />
-        <CardActions disableSpacing>
-          <IconButton aria-label='コメント' sx={{ mx: 2 }}>
-            <ChatBubbleIcon />
-          </IconButton>
-          <IconButton
-            aria-label='いいね'
-            onClick={handleFavo}
-            color={favo ? 'secondary' : 'default'}
-          >
-            {favo ? (
-              <FavoriteIcon sx={{ color: red[500] }} />
-            ) : (
-              <FavoriteBorderIcon />
+          key={post.id}
+        >
+          <Card>
+            <CardHeader
+              sx={{ marginBottom: -2 }}
+              avatar={
+                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
+                  K
+                </Avatar>
+              }
+              action={
+                <IconButton aria-label='settings'>
+                  <DeleteIcon sx={{ color: red[500] }} />
+                </IconButton>
+              }
+              title='ユーザー名'
+              subheader='2023年9月14日'
+            />
+            <CardContent>{formatText(post.detail)}</CardContent>
+            {post.imageUrl && (
+              <CardMedia
+                sx={{
+                  p: 1,
+                  borderRadius: 3,
+                  objectFit: 'contain',
+                  maxWidth: 600,
+                  maxHeight: 500, // 画像の最大高さを700に
+                }}
+                component='img'
+                image={post.imageUrl}
+                alt='Paella dish'
+              />
             )}
-          </IconButton>
-        </CardActions>
-      </Card>
-    </Box>
+            <CardActions disableSpacing>
+              <IconButton aria-label='コメント' sx={{ mx: 2 }}>
+                <ChatBubbleIcon />
+              </IconButton>
+              <IconButton
+                aria-label='いいね'
+                onClick={handleFavo}
+                color={favo ? 'secondary' : 'default'}
+              >
+                {favo ? (
+                  <FavoriteIcon sx={{ color: red[500] }} />
+                ) : (
+                  <FavoriteBorderIcon />
+                )}
+              </IconButton>
+            </CardActions>
+          </Card>
+        </Box>
+      ))}
+    </>
   );
 }
