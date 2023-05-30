@@ -16,9 +16,10 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { collection, getDocs, onSnapshot } from 'firebase/firestore';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import FlipMove from 'react-flip-move';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -36,6 +37,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
   }),
 }));
 
+
 export default function TweetBox() {
   const [favo, setFavo] = useState(false);
   const [posts, setPosts] = useState<any[]>([]);
@@ -47,29 +49,13 @@ export default function TweetBox() {
   };
   //リアルタイム更新
   useEffect(() => {
-    if (!user) return;
+    const postsRef = collection(db, 'posts');
+    const q = query(postsRef, orderBy('timestamp', 'desc'));
 
-    // ユーザーの投稿を取得
-
-
-    const postsRef = collection(db, 'users', user.uid, 'posts');
-    const unsubscribe = onSnapshot(postsRef, (snapshot) => {
-      const listPosts: any[] = [];
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        const post = {
-          id: doc.id,
-          ...data,
-        };
-        listPosts.push(post);
-      });
-      setPosts(listPosts);
+    onSnapshot(q, (querySnapshot) => {
+      setPosts(querySnapshot.docs.map((doc) => doc.data()));
     });
-
-    return () => {
-      unsubscribe();
-    };
-  }, [user]);
+  }, []);
 
   const formatText = (text: string) => {
     return text.split('\n').map((line, index) => (
@@ -87,66 +73,68 @@ export default function TweetBox() {
 
   return (
     <>
-      {posts.map((post: any) => (
-        <Box
-          sx={{
-            backgroundColor: '#f1f1f1',
-            padding: '1rem',
-            maxWidth: 733,
-            minWidth: 733,
-          }}
-          key={post.id}
-        >
-          <Card>
-            <CardHeader
-              sx={{ marginBottom: -2 }}
-              avatar={
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
-                  K
-                </Avatar>
-              }
-              action={
-                <IconButton aria-label='settings'>
-                  <DeleteIcon sx={{ color: red[500] }} />
-                </IconButton>
-              }
-              title='ユーザー名'
-              subheader='2023年9月14日'
-            />
-            <CardContent>{formatText(post.detail)}</CardContent>
-            {post.imageUrl && (
-              <CardMedia
-                sx={{
-                  p: 1,
-                  borderRadius: 3,
-                  objectFit: 'contain',
-                  maxWidth: 600,
-                  maxHeight: 500, // 画像の最大高さを700に
-                }}
-                component='img'
-                image={post.imageUrl}
-                alt='Paella dish'
+      <FlipMove>
+        {posts.map((post: any) => (
+          <Box
+            sx={{
+              backgroundColor: '#f1f1f1',
+              padding: '1rem',
+              maxWidth: 733,
+              minWidth: 733,
+            }}
+            key={post.id}
+          >
+            <Card>
+              <CardHeader
+                sx={{ marginBottom: -2 }}
+                avatar={
+                  <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
+                    K
+                  </Avatar>
+                }
+                action={
+                  <IconButton aria-label='settings'>
+                    <DeleteIcon sx={{ color: red[500] }} />
+                  </IconButton>
+                }
+                title='ユーザー名'
+                subheader='2023年9月14日'
               />
-            )}
-            <CardActions disableSpacing>
-              <IconButton aria-label='コメント' sx={{ mx: 2 }}>
-                <ChatBubbleIcon />
-              </IconButton>
-              <IconButton
-                aria-label='いいね'
-                onClick={handleFavo}
-                color={favo ? 'secondary' : 'default'}
-              >
-                {favo ? (
-                  <FavoriteIcon sx={{ color: red[500] }} />
-                ) : (
-                  <FavoriteBorderIcon />
-                )}
-              </IconButton>
-            </CardActions>
-          </Card>
-        </Box>
-      ))}
+              <CardContent>{formatText(post.detail)}</CardContent>
+              {post.imageUrl && (
+                <CardMedia
+                  sx={{
+                    p: 1,
+                    borderRadius: 3,
+                    objectFit: 'contain',
+                    maxWidth: 600,
+                    maxHeight: 500, // 画像の最大高さを700に
+                  }}
+                  component='img'
+                  image={post.imageUrl}
+                  alt='Paella dish'
+                />
+              )}
+              <CardActions disableSpacing>
+                <IconButton aria-label='コメント' sx={{ mx: 2 }}>
+                  <ChatBubbleIcon />
+                </IconButton>
+                <IconButton
+                  aria-label='いいね'
+                  onClick={handleFavo}
+                  color={favo ? 'secondary' : 'default'}
+                >
+                  {favo ? (
+                    <FavoriteIcon sx={{ color: red[500] }} />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+              </CardActions>
+            </Card>
+          </Box>
+        ))}
+      </FlipMove>
     </>
   );
 }

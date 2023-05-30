@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { forwardRef, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
@@ -6,8 +6,9 @@ import { Box, FormControl, IconButton, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import { useRecoilState } from 'recoil';
-import { addDoc, collection } from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
+
 
 const TweetArea = () => {
   const MAX_CHARACTERS = 500; // 最大文字数の設定
@@ -16,20 +17,27 @@ const TweetArea = () => {
   const [avatar, setAvatar] = useState('');
   const user = auth.currentUser;
 
-  //firebaseにdetail追加
+  // firebaseにdetail追加
   const addPosts = async (e: any) => {
     e.preventDefault();
     if (detail.trim() === '') return;
     let processedDetail = detail.trim(); // 文字列の前後の空白を削除
     if (processedDetail.endsWith('\n')) {
       // 改行が文末にある場合、改行を削除
-      processedDetail = processedDetail.slice(0, -1);
+      while (processedDetail.endsWith('\n')) {
+        processedDetail = processedDetail.slice(0, -1);
+      }
     }
     try {
-      await addDoc(collection(db, 'users', user!.uid, 'posts'), {
+      await addDoc(collection(db, 'posts'), {
         detail: processedDetail,
         userName: userName,
         avatar: avatar,
+        timestamp: serverTimestamp(),
+        image: '',
+        favoriteCount: 0,
+        uid: user?.uid,
+        favorite: false
       });
       setDetail('');
     } catch (error) {
