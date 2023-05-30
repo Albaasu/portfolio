@@ -8,13 +8,14 @@ import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual
 import { useRecoilState } from 'recoil';
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
-
+import { likedState } from '@/Recoil/Atom';
 
 const TweetArea = () => {
   const MAX_CHARACTERS = 500; // 最大文字数の設定
   const [detail, setDetail] = useState('');
   const [userName, setUserName] = useState('');
   const [avatar, setAvatar] = useState('');
+  const [liked, setLiked] = useRecoilState(likedState)
   const user = auth.currentUser;
 
   // firebaseにdetail追加
@@ -36,8 +37,7 @@ const TweetArea = () => {
         timestamp: serverTimestamp(),
         image: '',
         favoriteCount: 0,
-        uid: user?.uid,
-        favorite: false
+        liked: liked,
       });
       setDetail('');
     } catch (error) {
