@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -34,7 +34,7 @@ export default function Signin() {
   );
 
 
-  const [error, setError] = React.useState('');
+  const [error, setError] = useState('');
 
   //新規登録
   const addUser = async (e: any) => {

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -19,7 +19,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { collection, getDocs, onSnapshot } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { useRecoilState } from 'recoil';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -38,16 +37,16 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export default function TweetBox() {
-  const [favo, setFavo] = React.useState(false);
-  const [posts, setPosts] = React.useState<any[]>([]);
+  const [favo, setFavo] = useState(false);
+  const [posts, setPosts] = useState<any[]>([]);
   const [user] = useAuthState(auth);
 
   // いいね色
   const handleFavo = () => {
     setFavo(!favo);
   };
-
-  React.useEffect(() => {
+  //リアルタイム更新
+  useEffect(() => {
     if (!user) return;
 
     const postsRef = collection(db, 'users', user.uid, 'posts');

@@ -1,5 +1,4 @@
-import { useEffect, useState } from 'react';
-import { Inter } from 'next/font/google';
+
 import Bottombar from '../components/Bottombar';
 import TopHeader from '../components/TopHeader';
 import Timeline from '../components/Timeline';

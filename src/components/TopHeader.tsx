@@ -1,4 +1,4 @@
-import * as React from 'react';
+import  React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -18,9 +18,9 @@ import { onAuthStateChanged, onIdTokenChanged, signOut } from 'firebase/auth';
 function TopHeader() {
   const router = useRouter();
   const user = auth.currentUser;
-  const [loginState, setLoginState] = React.useState<any>(null);
+  const [loginState, setLoginState] = useState<any>(null);
 
-  const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
     null
   );
 
@@ -33,7 +33,7 @@ function TopHeader() {
   };
 
   // ログイン監視
-  React.useEffect(() => {
+  useEffect(() => {
     const unSub = onAuthStateChanged(auth, (user) => {
       !user && router.push('/');
     });

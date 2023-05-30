@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -18,7 +18,7 @@ import { useRouter } from 'next/router';
 import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
 
 export default function Signin() {
-  const [error, setError] = React.useState('');
+  const [error, setError] = useState('');
 
   //ログイン
   const router = useRouter();
