@@ -39,6 +39,17 @@ export default function TweetBox() {
   const [posts, setPosts] = useState<any[]>([]);
   const [user] = useAuthState(auth);
 
+  // いいね数の状態を管理するためのオブジェクト
+  const [likesCount, setLikesCount] = useState<{ [postId: string]: number }>({});
+
+  // いいね数を更新する関数
+  const updateLikesCount = (postId: string, count: number) => {
+    setLikesCount((prevCount) => ({
+      ...prevCount,
+      [postId]: count,
+    }));
+  };
+
   // いいね色
   const handleFavo = async (postId: string) => {
     try {
@@ -47,7 +58,12 @@ export default function TweetBox() {
 
       if (postSnapshot.exists()) {
         const postLiked = postSnapshot.data().liked;
-        await updateDoc(postRef, { liked: !postLiked });
+        const postLikesCount = postSnapshot.data().favoriteCount;
+
+        await updateDoc(postRef, {
+          liked: !postLiked,
+          favoriteCount: postLiked ? postLikesCount -1 : postLikesCount + 1,
+        });
       }
     } catch (error) {
       console.error('Error updating post', error);
@@ -71,6 +87,28 @@ export default function TweetBox() {
       );
     });
   }, []);
+
+  useEffect(() => {
+    const unsubscribes: (() => void)[] = [];
+
+    // 各投稿のいいね数を取得するためのサブスクリプションを作成
+    posts.forEach((post) => {
+      const postRef = doc(db, 'posts', post.id);
+      const unsubscribe = onSnapshot(postRef, (doc) => {
+        if (doc.exists()) {
+          const postLikesCount = doc.data().favoriteCount || 0;
+          updateLikesCount(post.id, postLikesCount);
+        }
+      });
+
+      unsubscribes.push(unsubscribe);
+    });
+
+    return () => {
+      // クリーンアップ時にサブスクリプションを解除
+      unsubscribes.forEach((unsubscribe) => unsubscribe());
+    };
+  }, [posts]);
 
   const formatText = (text: string) => {
     return text.split('\n').map((line, index) => (
@@ -139,6 +177,7 @@ export default function TweetBox() {
                   <FavoriteBorderIcon />
                 )}
               </IconButton>
+              <Typography>{likesCount[post.id] || 0}</Typography>
             </CardActions>
           </Card>
         </Box>

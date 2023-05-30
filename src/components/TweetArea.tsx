@@ -6,7 +6,13 @@ import { Box, FormControl, IconButton, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import { useRecoilState } from 'recoil';
-import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  setDoc,
+} from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { likedState } from '@/Recoil/Atom';
 
@@ -15,7 +21,7 @@ const TweetArea = () => {
   const [detail, setDetail] = useState('');
   const [userName, setUserName] = useState('');
   const [avatar, setAvatar] = useState('');
-  const [liked, setLiked] = useRecoilState(likedState)
+  const [liked, setLiked] = useRecoilState(likedState);
   const user = auth.currentUser;
 
   // firebaseにdetail追加
@@ -38,6 +44,7 @@ const TweetArea = () => {
         image: '',
         favoriteCount: 0,
         liked: liked,
+        uid: user?.uid,
       });
       setDetail('');
     } catch (error) {
