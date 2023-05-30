@@ -49,6 +49,9 @@ export default function TweetBox() {
   useEffect(() => {
     if (!user) return;
 
+    // ユーザーの投稿を取得
+
+
     const postsRef = collection(db, 'users', user.uid, 'posts');
     const unsubscribe = onSnapshot(postsRef, (snapshot) => {
       const listPosts: any[] = [];
