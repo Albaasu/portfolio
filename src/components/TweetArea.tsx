@@ -9,9 +9,13 @@ import { useRecoilState } from 'recoil';
 import {
   addDoc,
   collection,
+  collectionGroup,
   doc,
+  getDocs,
+  query,
   serverTimestamp,
   setDoc,
+  where,
 } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { likedState } from '@/Recoil/Atom';
@@ -46,6 +50,7 @@ const TweetArea = () => {
         liked: liked,
         uid: user?.uid,
       });
+
       setDetail('');
     } catch (error) {
       console.log(error);

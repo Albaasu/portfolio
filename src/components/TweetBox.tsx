@@ -14,7 +14,15 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { collection, onSnapshot, orderBy, query, updateDoc, doc, getDoc } from 'firebase/firestore';
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  updateDoc,
+  doc,
+  getDoc,
+} from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { likedState } from '@/Recoil/Atom';
@@ -38,9 +46,12 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function TweetBox() {
   const [posts, setPosts] = useState<any[]>([]);
   const [user] = useAuthState(auth);
+  const [like, setLike] = useState(false);
 
   // いいね数の状態を管理するためのオブジェクト
-  const [likesCount, setLikesCount] = useState<{ [postId: string]: number }>({});
+  const [likesCount, setLikesCount] = useState<{ [postId: string]: number }>(
+    {}
+  );
 
   // いいね数を更新する関数
   const updateLikesCount = (postId: string, count: number) => {
@@ -62,7 +73,7 @@ export default function TweetBox() {
 
         await updateDoc(postRef, {
           liked: !postLiked,
-          favoriteCount: postLiked ? postLikesCount -1 : postLikesCount + 1,
+          favoriteCount: postLiked ? postLikesCount - 1 : postLikesCount + 1,
         });
       }
     } catch (error) {
@@ -112,7 +123,12 @@ export default function TweetBox() {
 
   const formatText = (text: string) => {
     return text.split('\n').map((line, index) => (
-      <Typography variant="subtitle1" color=".MuiTab-labelIcon" sx={{ px: 3 }} key={index}>
+      <Typography
+        variant='subtitle1'
+        color='.MuiTab-labelIcon'
+        sx={{ px: 3 }}
+        key={index}
+      >
         {line}
         <br />
       </Typography>
@@ -135,17 +151,17 @@ export default function TweetBox() {
             <CardHeader
               sx={{ marginBottom: -2 }}
               avatar={
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label="recipe">
+                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
                   K
                 </Avatar>
               }
               action={
-                <IconButton aria-label="settings">
+                <IconButton aria-label='settings'>
                   <DeleteIcon sx={{ color: red[500] }} />
                 </IconButton>
               }
-              title="ユーザー名"
-              subheader="2023年9月14日"
+              title='ユーザー名'
+              subheader='2023年9月14日'
             />
             <CardContent>{formatText(post.detail)}</CardContent>
             {post.imageUrl && (
@@ -157,17 +173,17 @@ export default function TweetBox() {
                   maxWidth: 600,
                   maxHeight: 500, // 画像の最大高さを700に
                 }}
-                component="img"
+                component='img'
                 image={post.imageUrl}
-                alt="Paella dish"
+                alt='Paella dish'
               />
             )}
             <CardActions disableSpacing>
-              <IconButton aria-label="コメント" sx={{ mx: 2 }}>
+              <IconButton aria-label='コメント' sx={{ mx: 2 }}>
                 <ChatBubbleIcon />
               </IconButton>
               <IconButton
-                aria-label="いいね"
+                aria-label='いいね'
                 onClick={() => handleFavo(post.id)}
                 color={post.liked ? 'secondary' : 'default'}
               >
