@@ -55,20 +55,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function TweetBox() {
   const [posts, setPosts] = useState<any[]>([]);
   const [user] = useAuthState(auth);
-  const [like, setLike] = useState(false);
-
-  // いいね数の状態を管理するためのオブジェクト
-  const [likesCount, setLikesCount] = useState<{ [postId: string]: number }>(
-    {}
-  );
-
-  // いいね数を更新する関数
-  const updateLikesCount = (postId: string, count: number) => {
-    setLikesCount((prevCount) => ({
-      ...prevCount,
-      [postId]: count,
-    }));
-  };
 
   // いいね色
   const handleFavo = async (postId: string) => {
@@ -77,12 +63,14 @@ export default function TweetBox() {
       const postSnapshot = await getDoc(postRef);
 
       if (postSnapshot.exists()) {
-        const postLiked = postSnapshot.data().liked;
-        const postLikesCount = postSnapshot.data().favoriteCount;
+        const postLikes = postSnapshot.data().likes;
+
+        const newPostLikes = postLikes.includes(user?.uid)
+          ? postLikes.filter((uid: string) => uid !== user?.uid)
+          : [...postLikes, user?.uid];
 
         await updateDoc(postRef, {
-          liked: !postLiked,
-          favoriteCount: postLiked ? postLikesCount - 1 : postLikesCount + 1,
+          likes: newPostLikes,
         });
       }
     } catch (error) {
@@ -116,28 +104,6 @@ export default function TweetBox() {
       );
     });
   }, []);
-
-  useEffect(() => {
-    const unsubscribes: (() => void)[] = [];
-
-    // 各投稿のいいね数を取得するためのサブスクリプションを作成
-    posts.forEach((post) => {
-      const postRef = doc(db, 'posts', post.id);
-      const unsubscribe = onSnapshot(postRef, (doc) => {
-        if (doc.exists()) {
-          const postLikesCount = doc.data().favoriteCount || 0;
-          updateLikesCount(post.id, postLikesCount);
-        }
-      });
-
-      unsubscribes.push(unsubscribe);
-    });
-
-    return () => {
-      // クリーンアップ時にサブスクリプションを解除
-      unsubscribes.forEach((unsubscribe) => unsubscribe());
-    };
-  }, [posts]);
 
   const formatText = (text: string) => {
     return text.split('\n').map((line, index) => (
@@ -208,15 +174,14 @@ export default function TweetBox() {
               <IconButton
                 aria-label='いいね'
                 onClick={() => handleFavo(post.id)}
-                color={post.liked ? 'secondary' : 'default'}
               >
-                {post.liked ? (
+                {post.likes.includes(user?.uid) ? (
                   <FavoriteIcon sx={{ color: red[500] }} />
                 ) : (
                   <FavoriteBorderIcon />
                 )}
               </IconButton>
-              <Typography>{likesCount[post.id] || 0}</Typography>
+              <Typography sx={{ mx: 2 }}>{post.likes.length}</Typography>
             </CardActions>
           </Card>
         </Box>

@@ -42,12 +42,12 @@ const TweetArea = () => {
     try {
       await addDoc(collection(db, 'posts'), {
         detail: processedDetail,
-        userName: userName,
-        avatar: avatar,
+        userName: user?.displayName,
+        avatar: user?.photoURL,
         timestamp: serverTimestamp(),
         image: '',
         favoriteCount: 0,
-        liked: liked,
+        likes:[] ,
         uid: user?.uid,
       });
 
