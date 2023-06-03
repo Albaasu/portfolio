@@ -14,6 +14,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
 import { auth } from '../../../firebase';
 import { onAuthStateChanged, onIdTokenChanged, signOut } from 'firebase/auth';
+import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
 
 function TopHeader() {
   const router = useRouter();
@@ -120,6 +121,10 @@ function TopHeader() {
               <Box>
                 <MenuItem>
                   <SettingsIcon sx={{ mr: 2 }} /> 設定
+                </MenuItem>
+                <MenuItem >
+                  <PersonRemoveIcon sx={{ mr: 2 }} />
+                  アカウント削除
                 </MenuItem>
                 <MenuItem onClick={handleLogout}>
                   <LogoutIcon sx={{ mr: 2 }} />

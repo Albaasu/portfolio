@@ -149,8 +149,8 @@ export default function TweetBox() {
                   </IconButton>
                 ) : null
               }
-              title='userName'
-              subheader='2023年9月14日'
+              title={user?.displayName}
+              subheader={post.timestamp?.toDate().toLocaleString()}
             />
             <CardContent>{formatText(post.detail)}</CardContent>
             {post.imageUrl && (

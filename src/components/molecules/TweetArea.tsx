@@ -9,24 +9,27 @@ import { useRecoilState } from 'recoil';
 import {
   addDoc,
   collection,
-  collectionGroup,
-  doc,
-  getDocs,
-  query,
   serverTimestamp,
-  setDoc,
-  where,
+
 } from 'firebase/firestore';
-import { auth, db } from '../../../firebase';
-import { likedState } from '@/Recoil/Atom';
+import { auth, db, storage } from '../../../firebase';
+import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+
 
 const TweetArea = () => {
+  const [fileUrl, setFileUrl] = useState<string>('');
   const MAX_CHARACTERS = 500; // 最大文字数の設定
   const [detail, setDetail] = useState('');
-  const [userName, setUserName] = useState('');
-  const [avatar, setAvatar] = useState('');
-  const [liked, setLiked] = useRecoilState(likedState);
+const [imageFile, setImageFile] = useState<File | null>(null);
   const user = auth.currentUser;
+
+  const handleImageArea = (e: any) => {
+    if (e.target.files[0]) {
+      setImageFile(e.target.files[0]);
+      e.target.value = '';
+    }
+  };
+
 
   // firebaseにdetail追加
   const addPosts = async (e: any) => {
@@ -40,15 +43,22 @@ const TweetArea = () => {
       }
     }
     try {
+      if(imageFile){
+        const storageRef = ref(storage, `images/${imageFile.name}`);
+        await uploadBytes(storageRef, imageFile);
+        const downloadURL = await getDownloadURL(storageRef);
+        setFileUrl(downloadURL);
+      }
+
       await addDoc(collection(db, 'posts'), {
         detail: processedDetail,
         userName: user?.displayName,
         avatar: user?.photoURL,
         timestamp: serverTimestamp(),
-        image: '',
-        favoriteCount: 0,
-        likes:[] ,
+        imageUrl: fileUrl,
+        likes: [],
         uid: user?.uid,
+
       });
 
       setDetail('');
@@ -69,11 +79,11 @@ const TweetArea = () => {
           title={
             <CardHeader
               avatar={
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
+                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe' src={user?.photoURL as string}>
                   K
                 </Avatar>
               }
-              title='UserName'
+              title={user?.displayName}
             />
           }
         />
@@ -96,10 +106,16 @@ const TweetArea = () => {
               }}
               inputProps={{ maxLength: MAX_CHARACTERS }} // 最大文字数
             />
-
-            <IconButton aria-label='画像' sx={{ mt: 1 }}>
+            <label htmlFor='file'>
+              <input
+                type='file'
+                name='file'
+                id='file'
+                style={{ display: 'none' }}
+                onChange={handleImageArea}
+              />
               <PhotoSizeSelectActualIcon sx={{ color: 'skyblue' }} />
-            </IconButton>
+            </label>
           </Box>
         </FormControl>
       </Card>
