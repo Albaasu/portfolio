@@ -1,5 +1,5 @@
-import Bottombar from '../components/Bottombar';
-import TopHeader from '../components/TopHeader';
+import Bottombar from '@/components/organisms/Bottombar';
+import TopHeader from '../components/organisms/TopHeader';
 
 export default function Favorite() {
   return (

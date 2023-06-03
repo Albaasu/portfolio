@@ -33,7 +33,7 @@ export default function Signin() {
       await signInWithEmailAndPassword(auth, loginEmail, loginPassword);
       setLoginEmail('');
       setLoginPassword('');
-      router.push('/Main');
+      router.push('/main');
     } catch (error) {
       setError('正しく入力してください');
     }

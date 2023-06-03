@@ -32,11 +32,9 @@ import {
   getDoc,
   deleteDoc,
 } from 'firebase/firestore';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import usePostDeletion from "../hooks/usePostDeletion"
-
-
+import usePostDeletion from '../../hooks/usePostDeletion';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {

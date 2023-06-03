@@ -13,11 +13,11 @@ export default function Bottombar() {
   const ref = React.useRef<HTMLDivElement>(null);
   const path = useRouter().pathname;
   React.useEffect(() => {
-    if (path === '/Main') {
+    if (path === '/main') {
       setValue(0);
-    } else if (path === '/Favorite') {
+    } else if (path === '/favorite') {
       setValue(1);
-    } else if (path === '/Mypage') {
+    } else if (path === '/mypage') {
       setValue(2);
     }
   }, [path]);
@@ -38,18 +38,18 @@ export default function Bottombar() {
           <BottomNavigationAction
             label='ホーム'
             icon={<HomeIcon />}
-            href='/Main'
+            href='/main'
           />
 
           <BottomNavigationAction
             label='いいね'
             icon={<FavoriteIcon />}
-            href='/Favorite'
+            href='/favorite'
           />
           <BottomNavigationAction
             label='マイページ'
             icon={<PersonIcon />}
-            href='/Mypage'
+            href='/mypage'
           />
         </BottomNavigation>
       </Paper>

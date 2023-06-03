@@ -17,7 +17,7 @@ import {
   setDoc,
   where,
 } from 'firebase/firestore';
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../../firebase';
 import { likedState } from '@/Recoil/Atom';
 
 const TweetArea = () => {
@@ -40,7 +40,7 @@ const TweetArea = () => {
       }
     }
     try {
-      await addDoc(collection(db, 'posts',  ), {
+      await addDoc(collection(db, 'posts'), {
         detail: processedDetail,
         userName: userName,
         avatar: avatar,
@@ -50,7 +50,7 @@ const TweetArea = () => {
         liked: liked,
         uid: user?.uid,
       });
-    
+
       setDetail('');
     } catch (error) {
       console.log(error);

@@ -1,4 +1,4 @@
-import  React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -12,7 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 import { onAuthStateChanged, onIdTokenChanged, signOut } from 'firebase/auth';
 
 function TopHeader() {
@@ -20,9 +20,7 @@ function TopHeader() {
   const user = auth.currentUser;
   const [loginState, setLoginState] = useState<any>(null);
 
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(
-    null
-  );
+  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);

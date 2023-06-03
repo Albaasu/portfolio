@@ -1,7 +1,6 @@
-
-import Bottombar from '../components/Bottombar';
-import TopHeader from '../components/TopHeader';
-import Timeline from '../components/Timeline';
+import Bottombar from '../components/organisms/Bottombar';
+import TopHeader from '../components/organisms/TopHeader';
+import Timeline from '../components/molecules/Timeline';
 import { useRouter } from 'next/router';
 
 export default function Main() {
