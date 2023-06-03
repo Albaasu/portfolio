@@ -40,7 +40,7 @@ const TweetArea = () => {
       }
     }
     try {
-      await addDoc(collection(db, 'posts'), {
+      await addDoc(collection(db, 'posts',  ), {
         detail: processedDetail,
         userName: userName,
         avatar: avatar,
@@ -50,7 +50,7 @@ const TweetArea = () => {
         liked: liked,
         uid: user?.uid,
       });
-
+    
       setDetail('');
     } catch (error) {
       console.log(error);

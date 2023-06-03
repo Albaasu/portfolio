@@ -12,7 +12,15 @@ import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { Box } from '@mui/material';
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
   collection,
@@ -22,10 +30,13 @@ import {
   updateDoc,
   doc,
   getDoc,
+  deleteDoc,
 } from 'firebase/firestore';
 import { auth, db } from '../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
-import { likedState } from '@/Recoil/Atom';
+import usePostDeletion from "../hooks/usePostDeletion"
+
+
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -80,6 +91,15 @@ export default function TweetBox() {
       console.error('Error updating post', error);
     }
   };
+
+  //カスタムフック投稿削除
+  const {
+    selectedPost,
+    openDialog,
+    handleDeleteClick,
+    handleDeleteConfirm,
+    handleDeleteCancel,
+  } = usePostDeletion();
 
   // リアルタイム更新
   useEffect(() => {
@@ -156,11 +176,16 @@ export default function TweetBox() {
                 </Avatar>
               }
               action={
-                <IconButton aria-label='settings'>
-                  <DeleteIcon sx={{ color: red[500] }} />
-                </IconButton>
+                post.uid === user?.uid ? (
+                  <IconButton
+                    aria-label='settings'
+                    onClick={() => handleDeleteClick(post)}
+                  >
+                    <DeleteIcon sx={{ color: red[500] }} />
+                  </IconButton>
+                ) : null
               }
-              title='ユーザー名'
+              title='userName'
               subheader='2023年9月14日'
             />
             <CardContent>{formatText(post.detail)}</CardContent>
@@ -198,6 +223,19 @@ export default function TweetBox() {
           </Card>
         </Box>
       ))}
+
+      <Dialog open={openDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>投稿の削除</DialogTitle>
+        <DialogContent>
+          <DialogContentText>本当にこの投稿を削除しますか？</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>キャンセル</Button>
+          <Button onClick={handleDeleteConfirm} color='error'>
+            はい
+          </Button>
+        </DialogActions>
+      </Dialog>
     </>
   );
 }
