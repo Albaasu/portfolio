@@ -1,6 +1,5 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -15,7 +14,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useState } from 'react';
 import MediButton from '@/components/atoms/MediButton';
-import MediTextArea from '@/components/atoms/MediTextArea';
+
 import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
 import MediTextAreaPass from '@/components/atoms/MediTextAreaPass';
 
@@ -66,14 +65,13 @@ export default function Signin() {
           新規登録
         </Typography>
         <Box component='form' noValidate sx={{ mt: 1 }}>
-        <MediTextAreaEmail
-          
-          onChange={(e: any) => setRegisterEmail(e.target.value)}
-        ></MediTextAreaEmail>
+          <MediTextAreaEmail
+            onChange={(e: any) => setRegisterEmail(e.target.value)}
+          ></MediTextAreaEmail>
 
-        <MediTextAreaPass
-          onChange={(e: any) => setRegisterPassword(e.target.value)}
-        />
+          <MediTextAreaPass
+            onChange={(e: any) => setRegisterPassword(e.target.value)}
+          />
 
           {error && (
             <Typography color='error' variant='body2' align='center'>

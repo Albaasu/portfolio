@@ -13,7 +13,6 @@ import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
 import MediButton from '@/components/atoms/MediButton';
-import MediTextArea from '@/components/atoms/MediTextArea';
 import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
 import MediTextAreaPass from '@/components/atoms/MediTextAreaPass';
 
@@ -56,7 +55,6 @@ export default function Signin() {
         </Typography>
         <Box component='form' noValidate sx={{ mt: 1 }}>
           <MediTextAreaEmail
-          
             onChange={(e: any) => setLoginEmail(e.target.value)}
           ></MediTextAreaEmail>
 

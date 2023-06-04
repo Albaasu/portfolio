@@ -2,7 +2,7 @@ import { TextField } from '@mui/material';
 import React from 'react';
 
 const MediTextAreaPass = (props: any) => {
-  const { name, value, type, label, id, autoComplete, sx } = props;
+  const { value, sx } = props;
 
   return (
     <TextField
