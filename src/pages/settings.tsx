@@ -10,7 +10,7 @@ import { updateProfile } from 'firebase/auth';
 const Settings = () => {
   const user = auth.currentUser;
   const userName = user?.displayName;
-  const avatar = user?.photoURL || "";
+  const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
   
@@ -24,7 +24,7 @@ const Settings = () => {
   }, []);
 
   
-console.log(user)
+  console.log(user)
   return (
     <>
       <TopHeader />
@@ -46,14 +46,13 @@ console.log(user)
         >
           <label htmlFor='file'>
             <input
-            
               type='file'
               name='file'
               id='file'
               style={{ display: 'none' }}
             />
             <Avatar
-            src={avatar}
+              src={photoURL} // photoURL をプレビューに使用する
               sx={{
                 width: '100px',
                 height: '100px',
@@ -70,7 +69,7 @@ console.log(user)
             </Avatar>
           </label>
           <div>
-            <TextField sx={{ width: '800px', my: 2 }} label={userName}/>
+            <TextField sx={{ width: '800px', my: 2 }} label={userName} />
           </div>
           <div>
             <Button variant='outlined' size='medium'>
