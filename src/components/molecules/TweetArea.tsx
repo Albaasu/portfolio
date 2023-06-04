@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
@@ -17,6 +17,9 @@ const TweetArea = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const user = auth.currentUser;
   const photoURL = user?.photoURL ||"";
+  const [users, setUsers] = useState<any>(null);
+  const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
+
 
   const handleImageArea = (e: any) => {
     if (e.target.files[0]) {
@@ -24,6 +27,15 @@ const TweetArea = () => {
       e.target.value = '';
     }
   };
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUsers(user);
+      setUserLoaded(true);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   // firebaseにdetail追加
   const addPosts = async (e: any) => {

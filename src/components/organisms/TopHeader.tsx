@@ -22,6 +22,8 @@ function TopHeader() {
   const [loginState, setLoginState] = useState<any>(null);
   const photoURL = user?.photoURL || '';
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [users, setUsers] = useState<any>(null);
+  const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -39,6 +41,17 @@ function TopHeader() {
     return () => unSub();
   }, [router]);
 
+  //ユーザー情報
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setUsers(user);
+      setUserLoaded(true);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+
   //ログアウト
 
   const handleLogout = async (e: any) => {
@@ -54,7 +67,7 @@ function TopHeader() {
   const handleSettings = () => {
     router.push('/settings');
   };
-  
+
   return (
     <AppBar position='fixed' sx={{ backgroundColor: '#6699cc' }}>
       <Container maxWidth='xl'>

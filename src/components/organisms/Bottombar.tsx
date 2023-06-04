@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -8,6 +8,7 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
 import SettingsIcon from '@mui/icons-material/Settings';
+import { auth } from '../../../firebase';
 
 export default function Bottombar() {
   const [value, setValue] = useState<any>(null);
@@ -22,6 +23,9 @@ export default function Bottombar() {
       setValue(2);
     }
   }, [path]);
+
+
+
 
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
