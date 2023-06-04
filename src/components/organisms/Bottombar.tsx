@@ -8,7 +8,6 @@ import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
 import SettingsIcon from '@mui/icons-material/Settings';
-import { auth } from '../../../firebase';
 
 export default function Bottombar() {
   const [value, setValue] = useState<any>(null);
@@ -22,10 +21,10 @@ export default function Bottombar() {
     } else if (path === '/mypage') {
       setValue(2);
     }
+     else if (path === '/settings') {
+      setValue(3);
+    }
   }, [path]);
-
-
-
 
   return (
     <Box sx={{ pb: 7 }} ref={ref}>
@@ -36,7 +35,7 @@ export default function Bottombar() {
         <BottomNavigation
           showLabels
           value={value}
-          onChange={(event, newValue) => {
+          onChange={( newValue) => {
             setValue(newValue);
           }}
         >
