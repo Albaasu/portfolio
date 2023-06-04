@@ -1,5 +1,5 @@
 import Box from '@mui/material/Box';
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import BottomNavigation from '@mui/material/BottomNavigation';
 import BottomNavigationAction from '@mui/material/BottomNavigationAction';
 import FavoriteIcon from '@mui/icons-material/Favorite';
