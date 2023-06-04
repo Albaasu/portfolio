@@ -125,74 +125,79 @@ export default function TweetBox() {
 
   return (
     <>
-      {posts.map((post: any) => (
-        <Box
-          sx={{
-            backgroundColor: '#f1f1f1',
-            padding: '1rem',
-            maxWidth: 733,
-            minWidth: 733,
-          }}
-          key={post.id}
-        >
-          <Card>
-            <CardHeader
-              sx={{ marginBottom: -2 }}
-              avatar={
-                <Avatar
-                  sx={{ bgcolor: 'lightblue' }}
-                  aria-label='recipe'
-                  src={photoURL}
-                ></Avatar>
-              }
-              action={
-                post.uid === user?.uid ? (
-                  <IconButton
-                    aria-label='settings'
-                    onClick={() => handleDeleteClick(post)}
-                  >
-                    <DeleteIcon sx={{ color: red[500] }} />
-                  </IconButton>
-                ) : null
-              }
-              title={displayName}
-              subheader={post.timestamp?.toDate().toLocaleString()}
-            />
-            <CardContent>{formatText(post.detail)}</CardContent>
-            {post.imageUrl && (
-              <CardMedia
-                sx={{
-                  p: 1,
-                  borderRadius: 3,
-                  objectFit: 'contain',
-                  maxWidth: 500,
-                  maxHeight: 600,
-                  margin: 'auto',
-                }}
-                component='img'
-                image={post.imageUrl}
-                alt='Paella dish'
+      {posts.map((post: any) => {
+        const isCurrentUserPost = post.uid === user?.uid;
+        const postDisplayName = isCurrentUserPost ? displayName : post.userName;
+
+        return (
+          <Box
+            sx={{
+              backgroundColor: '#f1f1f1',
+              padding: '1rem',
+              maxWidth: 733,
+              minWidth: 733,
+            }}
+            key={post.id}
+          >
+            <Card>
+              <CardHeader
+                sx={{ marginBottom: -2 }}
+                avatar={
+                  <Avatar
+                    sx={{ bgcolor: 'lightblue' }}
+                    aria-label='recipe'
+                    src={photoURL}
+                  ></Avatar>
+                }
+                action={
+                  isCurrentUserPost ? (
+                    <IconButton
+                      aria-label='settings'
+                      onClick={() => handleDeleteClick(post)}
+                    >
+                      <DeleteIcon sx={{ color: red[500] }} />
+                    </IconButton>
+                  ) : null
+                }
+                title={postDisplayName}
+                subheader={post.timestamp?.toDate().toLocaleString()}
               />
-            )}
-            <CardActions disableSpacing>
-              <IconButton aria-label='コメント' sx={{ mx: 2 }}>
-                <ChatBubbleIcon />
-              </IconButton>
-              <IconButton
-                aria-label='いいね'
-                onClick={() => handleFavo(post.id)}
-              >
-                {post.likes.includes(user?.uid) ? (
-                  <FavoriteIcon sx={{ color: red[500] }} />
-                ) : (
-                  <FavoriteBorderIcon />
-                )}
-              </IconButton>
-              <Typography>{post.likes.length}</Typography>
-            </CardActions>
-          </Card>
-        </Box>
-      ))}
+              <CardContent>{formatText(post.detail)}</CardContent>
+              {post.imageUrl && (
+                <CardMedia
+                  sx={{
+                    p: 1,
+                    borderRadius: 3,
+                    objectFit: 'contain',
+                    maxWidth: 500,
+                    maxHeight: 600,
+                    margin: 'auto',
+                  }}
+                  component='img'
+                  image={post.imageUrl}
+                  alt='Paella dish'
+                />
+              )}
+              <CardActions disableSpacing>
+                <IconButton aria-label='コメント' sx={{ mx: 2 }}>
+                  <ChatBubbleIcon />
+                </IconButton>
+                <IconButton
+                  aria-label='いいね'
+                  onClick={() => handleFavo(post.id)}
+                >
+                  {post.likes.includes(user?.uid) ? (
+                    <FavoriteIcon sx={{ color: red[500] }} />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+                <Typography>{post.likes.length}</Typography>
+              </CardActions>
+            </Card>
+          </Box>
+        );
+      })}
 
       <Dialog open={openDialog} onClose={handleDeleteCancel}>
         <DialogTitle>投稿の削除</DialogTitle>

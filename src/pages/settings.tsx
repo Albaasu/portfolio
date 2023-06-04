@@ -6,14 +6,13 @@ import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { auth, db } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
 
-
 const Settings = () => {
-  const user = auth.currentUser;
-  const userName = user?.displayName;
+  const user:any = auth.currentUser;
+  const [userName, setUserName] = useState(user?.displayName || '');
   const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
-  
+
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUsers(user);
@@ -23,8 +22,22 @@ const Settings = () => {
     return () => unsubscribe();
   }, []);
 
-  
-  console.log(user)
+  console.log(user);
+
+  const handleUpdateProfile = () => {
+    if (userName.trim() !== '') {
+      updateProfile(user, { displayName: userName })
+        .then(() => {
+          console.log('ユーザー名が更新されました');
+        })
+        .catch((error) => {
+          console.log('ユーザー名の更新に失敗しました', error);
+        });
+    } else {
+      console.log('ユーザー名を入力してください');
+    }
+  };
+
   return (
     <>
       <TopHeader />
@@ -52,7 +65,7 @@ const Settings = () => {
               style={{ display: 'none' }}
             />
             <Avatar
-              src={photoURL} // photoURL をプレビューに使用する
+              src={photoURL}
               sx={{
                 width: '100px',
                 height: '100px',
@@ -69,10 +82,15 @@ const Settings = () => {
             </Avatar>
           </label>
           <div>
-            <TextField sx={{ width: '800px', my: 2 }} label={userName} />
+            <TextField
+              sx={{ width: '800px', my: 2 }}
+              label='ユーザー名'
+              value={userName}
+              onChange={(e) => setUserName(e.target.value)}
+            />
           </div>
           <div>
-            <Button variant='outlined' size='medium'>
+            <Button variant='outlined' size='medium' onClick={handleUpdateProfile}>
               更新
             </Button>
           </div>
