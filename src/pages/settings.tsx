@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '@/components/organisms/TopHeader';
-import { Button, TextField, Avatar, Box, Alert } from '@mui/material';
+import {  TextField, Avatar, Box, Alert } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { auth, db } from '../../firebase';
+import { auth} from '../../firebase';
 import { updateProfile } from 'firebase/auth';
 import MediButton from '@/components/atoms/MediButton';
 

@@ -30,7 +30,6 @@ import {
   updateDoc,
   doc,
   getDoc,
-  deleteDoc,
 } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';

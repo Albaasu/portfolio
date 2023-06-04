@@ -1,19 +1,15 @@
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useRecoilState } from 'recoil';
-
 import { useRouter } from 'next/router';
 import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
 import MediButton from '@/components/atoms/MediButton';
@@ -87,7 +83,9 @@ export default function Signin() {
             </Typography>
           )}
 
-<MediButton onClick={handleLoginClick} sx={{ mt: 2, mb: 2 }}>ログイン</MediButton>
+          <MediButton onClick={handleLoginClick} sx={{ mt: 2, mb: 2 }}>
+            ログイン
+          </MediButton>
           <Grid container>
             <Grid item xs>
               <Link href='forget' variant='body1'>

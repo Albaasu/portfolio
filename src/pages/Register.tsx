@@ -1,9 +1,6 @@
 import React from 'react';
 import Avatar from '@mui/material/Avatar';
-import Button from '@mui/material/Button';
-import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -14,15 +11,10 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { registerEmailState } from '../Recoil/Atom';
 import { registerPasswordState } from '../Recoil/Atom';
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-} from 'firebase/auth';
-import { auth, db } from '../../firebase';
-import { useEffect } from 'react';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../firebase';
 import { useState } from 'react';
 import MediButton from '@/components/atoms/MediButton';
-
 
 export default function Signin() {
   const router = useRouter();
@@ -33,7 +25,6 @@ export default function Signin() {
   const [registerPassword, setRegisterPassword] = useRecoilState<string>(
     registerPasswordState
   );
-
 
   const [error, setError] = useState('');
 
@@ -56,69 +47,71 @@ export default function Signin() {
   };
 
   return (
-      <Container component='main' maxWidth='xs'>
-        <Box
-          sx={{
-            marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Avatar sx={{ m: 1, bgcolor: 'skyblue' }}>
-            <LockOutlinedIcon />
-          </Avatar>
-          <Typography component='h1' variant='h5'>
+    <Container component='main' maxWidth='xs'>
+      <Box
+        sx={{
+          marginTop: 8,
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: 'skyblue' }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component='h1' variant='h5'>
+          新規登録
+        </Typography>
+        <Box component='form' noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin='normal'
+            required
+            fullWidth
+            id='email'
+            label='メールアドレス'
+            name='email'
+            autoComplete='email'
+            autoFocus
+            value={registerEmail}
+            onChange={(e) => setRegisterEmail(e.target.value)}
+          />
+          <TextField
+            margin='normal'
+            required
+            fullWidth
+            name='password'
+            label='パスワード'
+            type='password'
+            id='password'
+            autoComplete='current-password'
+            value={registerPassword}
+            onChange={(e) => setRegisterPassword(e.target.value)}
+          />
+
+          {error && (
+            <Typography color='error' variant='body2' align='center'>
+              {error}
+            </Typography>
+          )}
+
+          <MediButton onClick={addUser} sx={{ mt: 2, mb: 2 }}>
             新規登録
-          </Typography>
-          <Box component='form' noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='email'
-              label='メールアドレス'
-              name='email'
-              autoComplete='email'
-              autoFocus
-              value={registerEmail}
-              onChange={(e) => setRegisterEmail(e.target.value)}
-            />
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              name='password'
-              label='パスワード'
-              type='password'
-              id='password'
-              autoComplete='current-password'
-              value={registerPassword}
-              onChange={(e) => setRegisterPassword(e.target.value)}
-            />
+          </MediButton>
 
-            {error && (
-              <Typography color='error' variant='body2' align='center'>
-                {error}
-              </Typography>
-            )}
-
- <MediButton onClick={addUser} sx={{ mt: 2, mb: 2 }}>新規登録</MediButton>
-
-            <Grid container>
-              <Grid item xs>
-                <Link href='forget' variant='body1'>
-                  パスワードを忘れた
-                </Link>
-              </Grid>
-              <Grid item>
-                <Link href='/signin' variant='body1'>
-                  ログイン
-                </Link>
-              </Grid>
+          <Grid container>
+            <Grid item xs>
+              <Link href='forget' variant='body1'>
+                パスワードを忘れた
+              </Link>
             </Grid>
-          </Box>
+            <Grid item>
+              <Link href='/signin' variant='body1'>
+                ログイン
+              </Link>
+            </Grid>
+          </Grid>
         </Box>
-      </Container>
+      </Box>
+    </Container>
   );
 }
