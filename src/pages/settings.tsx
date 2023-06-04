@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from 'react';
 import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '@/components/organisms/TopHeader';
-import { Button, TextField, Avatar, Box } from '@mui/material';
+import { Button, TextField, Avatar, Box, Alert } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { auth, db } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
 
 const Settings = () => {
-  const user:any = auth.currentUser;
+  const user: any = auth.currentUser;
   const [userName, setUserName] = useState(user?.displayName || '');
   const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
+  const [completed, setCompleted] = useState<string | null>(null);
+  const [errorName, setErrorName] = useState<string | null>(null);
+  const [userNoname, setUserNoname] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -28,13 +31,13 @@ const Settings = () => {
     if (userName.trim() !== '') {
       updateProfile(user, { displayName: userName })
         .then(() => {
-          console.log('ユーザー名が更新されました');
+          setUserName('');
+          setCompleted('ユーザー名を更新しました');
         })
         .catch((error) => {
-          console.log('ユーザー名の更新に失敗しました', error);
+          setUserName('');
+          setErrorName('ユーザー名を更新できませんでした');
         });
-    } else {
-      console.log('ユーザー名を入力してください');
     }
   };
 
@@ -84,13 +87,18 @@ const Settings = () => {
           <div>
             <TextField
               sx={{ width: '800px', my: 2 }}
-              label='ユーザー名'
+              label={user?.displayName || 'No Name'}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
             />
           </div>
+          {completed && <Alert severity='success'>{completed}</Alert>}
           <div>
-            <Button variant='outlined' size='medium' onClick={handleUpdateProfile}>
+            <Button
+              variant='outlined'
+              size='medium'
+              onClick={handleUpdateProfile}
+            >
               更新
             </Button>
           </div>
