@@ -20,7 +20,7 @@ function TopHeader() {
   const router = useRouter();
   const user = auth.currentUser;
   const [loginState, setLoginState] = useState<any>(null);
-
+  const photoURL = user?.photoURL || '';
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -51,6 +51,10 @@ function TopHeader() {
     }
   };
 
+  const handleSettings = () => {
+    router.push('/settings');
+  };
+  
   return (
     <AppBar position='fixed' sx={{ backgroundColor: '#6699cc' }}>
       <Container maxWidth='xl'>
@@ -97,8 +101,8 @@ function TopHeader() {
           >
             <Tooltip title='プロフィール'>
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
-                  K
+                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe' src={photoURL }>
+                  
                 </Avatar>
               </IconButton>
             </Tooltip>
@@ -119,7 +123,7 @@ function TopHeader() {
               onClose={handleCloseUserMenu}
             >
               <Box>
-                <MenuItem>
+                <MenuItem onClick={handleSettings}>
                   <SettingsIcon sx={{ mr: 2 }} /> 設定
                 </MenuItem>
                 <MenuItem >

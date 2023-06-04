@@ -55,6 +55,10 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 export default function TweetBox() {
   const [posts, setPosts] = useState<any[]>([]);
   const [user] = useAuthState(auth);
+  //名前がないときはNo Name
+  const displayName = user?.displayName || 'No Name';
+  //画像がないときは適当な画像
+  const photoURL = user?.photoURL || '';
 
   // いいね色
   const handleFavo = async (postId: string) => {
@@ -135,9 +139,11 @@ export default function TweetBox() {
             <CardHeader
               sx={{ marginBottom: -2 }}
               avatar={
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe'>
-                  K
-                </Avatar>
+                <Avatar
+                  sx={{ bgcolor: 'lightblue' }}
+                  aria-label='recipe'
+                  src={photoURL}
+                ></Avatar>
               }
               action={
                 post.uid === user?.uid ? (
@@ -149,7 +155,7 @@ export default function TweetBox() {
                   </IconButton>
                 ) : null
               }
-              title={user?.displayName}
+              title={displayName}
               subheader={post.timestamp?.toDate().toLocaleString()}
             />
             <CardContent>{formatText(post.detail)}</CardContent>
@@ -159,8 +165,9 @@ export default function TweetBox() {
                   p: 1,
                   borderRadius: 3,
                   objectFit: 'contain',
-                  maxWidth: 600,
-                  maxHeight: 500, // 画像の最大高さを700に
+                  maxWidth: 500,
+                  maxHeight: 600,
+                  margin: 'auto',
                 }}
                 component='img'
                 image={post.imageUrl}
@@ -181,7 +188,7 @@ export default function TweetBox() {
                   <FavoriteBorderIcon />
                 )}
               </IconButton>
-              <Typography sx={{ mx: 2 }}>{post.likes.length}</Typography>
+              <Typography>{post.likes.length}</Typography>
             </CardActions>
           </Card>
         </Box>

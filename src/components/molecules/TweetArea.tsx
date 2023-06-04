@@ -5,13 +5,7 @@ import Avatar from '@mui/material/Avatar';
 import { Box, FormControl, IconButton, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { useRecoilState } from 'recoil';
-import {
-  addDoc,
-  collection,
-  serverTimestamp,
-
-} from 'firebase/firestore';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db, storage } from '../../../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
@@ -20,8 +14,9 @@ const TweetArea = () => {
   const [fileUrl, setFileUrl] = useState<string>('');
   const MAX_CHARACTERS = 500; // 最大文字数の設定
   const [detail, setDetail] = useState('');
-const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
   const user = auth.currentUser;
+  const photoURL = user?.photoURL ||"";
 
   const handleImageArea = (e: any) => {
     if (e.target.files[0]) {
@@ -29,7 +24,6 @@ const [imageFile, setImageFile] = useState<File | null>(null);
       e.target.value = '';
     }
   };
-
 
   // firebaseにdetail追加
   const addPosts = async (e: any) => {
@@ -43,7 +37,7 @@ const [imageFile, setImageFile] = useState<File | null>(null);
       }
     }
     try {
-      if(imageFile){
+      if (imageFile) {
         const storageRef = ref(storage, `images/${imageFile.name}`);
         await uploadBytes(storageRef, imageFile);
         const downloadURL = await getDownloadURL(storageRef);
@@ -58,7 +52,6 @@ const [imageFile, setImageFile] = useState<File | null>(null);
         imageUrl: fileUrl,
         likes: [],
         uid: user?.uid,
-
       });
 
       setDetail('');
@@ -66,6 +59,7 @@ const [imageFile, setImageFile] = useState<File | null>(null);
       console.log(error);
     }
   };
+
 
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
@@ -79,8 +73,12 @@ const [imageFile, setImageFile] = useState<File | null>(null);
           title={
             <CardHeader
               avatar={
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe' src={user?.photoURL as string}>
-                  K
+                <Avatar
+                  sx={{ bgcolor: 'lightblue' }}
+                  aria-label='recipe'
+                  src={photoURL}
+                >
+                  
                 </Avatar>
               }
               title={user?.displayName}
@@ -114,7 +112,18 @@ const [imageFile, setImageFile] = useState<File | null>(null);
                 style={{ display: 'none' }}
                 onChange={handleImageArea}
               />
-              <PhotoSizeSelectActualIcon sx={{ color: 'skyblue' }} />
+              <PhotoSizeSelectActualIcon
+                sx={{
+                  color: 'skyblue',
+                  '&:hover': {
+                    transform: 'scale(1.1)',
+                    transition: '0.3s',
+                  },
+                  mt: 2,
+                  ml: 2,
+                  mb: 1,
+                }}
+              />
             </label>
           </Box>
         </FormControl>

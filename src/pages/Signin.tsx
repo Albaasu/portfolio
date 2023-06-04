@@ -98,12 +98,12 @@ export default function Signin() {
 
           <Grid container>
             <Grid item xs>
-              <Link href='Forget' variant='body1'>
+              <Link href='forget' variant='body1'>
                 パスワードを忘れた
               </Link>
             </Grid>
             <Grid item>
-              <Link href='Register' variant='body1'>
+              <Link href='register' variant='body1'>
                 新規登録
               </Link>
             </Grid>

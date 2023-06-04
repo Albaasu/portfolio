@@ -7,6 +7,7 @@ import Paper from '@mui/material/Paper';
 import HomeIcon from '@mui/icons-material/Home';
 import PersonIcon from '@mui/icons-material/Person';
 import { useRouter } from 'next/router';
+import SettingsIcon from '@mui/icons-material/Settings';
 
 export default function Bottombar() {
   const [value, setValue] = useState<any>(null);
@@ -50,6 +51,11 @@ export default function Bottombar() {
             label='マイページ'
             icon={<PersonIcon />}
             href='/mypage'
+          />
+          <BottomNavigationAction
+            label='設定'
+            icon={<SettingsIcon />}
+            href='/settings'
           />
         </BottomNavigation>
       </Paper>
