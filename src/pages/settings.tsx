@@ -5,6 +5,7 @@ import { Button, TextField, Avatar, Box, Alert } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { auth, db } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
+import MediButton from '@/components/atoms/MediButton';
 
 const Settings = () => {
   const user: any = auth.currentUser;
@@ -93,14 +94,10 @@ const Settings = () => {
             />
           </div>
           {completed && <Alert severity='success'>{completed}</Alert>}
+          {errorName && <Alert severity='error'>{errorName}</Alert>}
           <div>
-            <Button
-              variant='outlined'
-              size='medium'
-              onClick={handleUpdateProfile}
-            >
-              更新
-            </Button>
+
+          <MediButton onClick={handleUpdateProfile}>更新</MediButton>
           </div>
         </Box>
       </Box>

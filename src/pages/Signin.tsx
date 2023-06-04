@@ -16,6 +16,7 @@ import { useRecoilState } from 'recoil';
 
 import { useRouter } from 'next/router';
 import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
+import MediButton from '@/components/atoms/MediButton';
 
 export default function Signin() {
   const [error, setError] = useState('');
@@ -86,16 +87,7 @@ export default function Signin() {
             </Typography>
           )}
 
-          <Button
-            type='submit'
-            fullWidth
-            variant='outlined'
-            sx={{ mt: 2, mb: 2 }}
-            onClick={handleLoginClick}
-          >
-            ログイン
-          </Button>
-
+<MediButton onClick={handleLoginClick} sx={{ mt: 2, mb: 2 }}>ログイン</MediButton>
           <Grid container>
             <Grid item xs>
               <Link href='forget' variant='body1'>

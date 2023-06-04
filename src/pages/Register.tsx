@@ -21,6 +21,7 @@ import {
 import { auth, db } from '../../firebase';
 import { useEffect } from 'react';
 import { useState } from 'react';
+import MediButton from '@/components/atoms/MediButton';
 
 
 export default function Signin() {
@@ -102,15 +103,7 @@ export default function Signin() {
               </Typography>
             )}
 
-            <Button
-              type='submit'
-              fullWidth
-              variant='outlined'
-              sx={{ mt: 2, mb: 2 }}
-              onClick={addUser}
-            >
-              新規登録
-            </Button>
+ <MediButton onClick={addUser} sx={{ mt: 2, mb: 2 }}>新規登録</MediButton>
 
             <Grid container>
               <Grid item xs>

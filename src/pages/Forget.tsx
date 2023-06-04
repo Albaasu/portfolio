@@ -15,6 +15,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useRouter } from 'next/router';
+import MediButton from '@/components/atoms/MediButton';
 
 const theme = createTheme({
   palette: {
@@ -90,25 +91,17 @@ export default function Forget() {
             {success && (
               <Alert severity='success'>メールアドレスに送信しました</Alert>
             )}
+<MediButton onClick={handlePasswordReset} sx={{ mt: 1, mb: 2 }}>パスワード再設定</MediButton>
 
-            <Button
-              type='submit'
-              fullWidth
-              variant='outlined'
-              sx={{ mt: 2, mb: 2 }}
-              onClick={handleSubmit}
-            >
-              パスワード再設定
-            </Button>
 
             <Grid container>
               <Grid item xs>
-                <Link href='/Register' variant='body1'>
+                <Link href='/register' variant='body1'>
                   新規登録
                 </Link>
               </Grid>
               <Grid item>
-                <Link href='/Signin' variant='body1'>
+                <Link href='/signin' variant='body1'>
                   ログイン
                 </Link>
               </Grid>
