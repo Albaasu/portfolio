@@ -15,6 +15,8 @@ import { sendPasswordResetEmail } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useRouter } from 'next/router';
 import MediButton from '@/components/atoms/MediButton';
+import MediTextArea from '@/components/atoms/MediTextArea';
+import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
 
 const theme = createTheme({
   palette: {
@@ -69,19 +71,10 @@ export default function Forget() {
             パスワード再設定
           </Typography>
           <Box component='form' noValidate sx={{ mt: 1 }}>
-            <TextField
-              margin='normal'
-              required
-              fullWidth
-              id='email'
-              label='メールアドレス'
-              name='email'
-              autoComplete='email'
-              autoFocus
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-
+          <MediTextAreaEmail
+          
+          onChange={(e: any) => setEmail(e.target.value)}
+        ></MediTextAreaEmail>
             {error && (
               <Alert severity='error'>
                 メールアドレスに送信できませんでした
@@ -90,8 +83,9 @@ export default function Forget() {
             {success && (
               <Alert severity='success'>メールアドレスに送信しました</Alert>
             )}
-<MediButton onClick={handlePasswordReset} sx={{ mt: 1, mb: 2 }}>パスワード再設定</MediButton>
-
+            <MediButton onClick={handlePasswordReset} sx={{ mt: 1, mb: 2 }}>
+              パスワード再設定
+            </MediButton>
 
             <Grid container>
               <Grid item xs>

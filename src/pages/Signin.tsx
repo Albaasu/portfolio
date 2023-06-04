@@ -13,6 +13,9 @@ import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
 import MediButton from '@/components/atoms/MediButton';
+import MediTextArea from '@/components/atoms/MediTextArea';
+import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
+import MediTextAreaPass from '@/components/atoms/MediTextAreaPass';
 
 export default function Signin() {
   const [error, setError] = useState('');
@@ -52,29 +55,13 @@ export default function Signin() {
           ログイン
         </Typography>
         <Box component='form' noValidate sx={{ mt: 1 }}>
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            id='email'
-            label='メールアドレス'
-            name='email'
-            autoComplete='email'
-            autoFocus
-            value={loginEmail}
-            onChange={(e) => setLoginEmail(e.target.value)}
-          />
-          <TextField
-            margin='normal'
-            required
-            fullWidth
-            name='password'
-            label='パスワード'
-            type='password'
-            id='password'
-            autoComplete='current-password'
-            value={loginPassword}
-            onChange={(e) => setLoginPassword(e.target.value)}
+          <MediTextAreaEmail
+          
+            onChange={(e: any) => setLoginEmail(e.target.value)}
+          ></MediTextAreaEmail>
+
+          <MediTextAreaPass
+            onChange={(e: any) => setLoginPassword(e.target.value)}
           />
 
           {error && (

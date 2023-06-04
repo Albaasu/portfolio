@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '@/components/organisms/TopHeader';
-import {  TextField, Avatar, Box, Alert } from '@mui/material';
+import { TextField, Avatar, Box, Alert } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { auth} from '../../firebase';
+import { auth } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
 import MediButton from '@/components/atoms/MediButton';
+import MediTextArea from '@/components/atoms/MediTextArea';
 
 const Settings = () => {
   const user: any = auth.currentUser;
@@ -86,18 +87,17 @@ const Settings = () => {
             </Avatar>
           </label>
           <div>
-            <TextField
+            <MediTextArea
               sx={{ width: '300px', my: 2 }}
               label={user?.displayName || 'No Name'}
               value={userName}
-              onChange={(e) => setUserName(e.target.value)}
-            />
+              onChange={(e: any) => setUserName(e.target.value)}
+            ></MediTextArea>
           </div>
           {completed && <Alert severity='success'>{completed}</Alert>}
           {errorName && <Alert severity='error'>{errorName}</Alert>}
           <div>
-
-          <MediButton onClick={handleUpdateProfile}>更新</MediButton>
+            <MediButton onClick={handleUpdateProfile}>更新</MediButton>
           </div>
         </Box>
       </Box>
