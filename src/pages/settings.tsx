@@ -58,7 +58,7 @@ const settings = () => {
             <TextField sx={{ width: '800px', my: 2 }} />
           </div>
           <div>
-            <Button variant='contained' color='primary'>
+            <Button variant='outlined' size='medium'>
               更新
             </Button>
           </div>
