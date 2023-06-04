@@ -87,7 +87,7 @@ const Settings = () => {
           </label>
           <div>
             <TextField
-              sx={{ width: '800px', my: 2 }}
+              sx={{ width: '300px', my: 2 }}
               label={user?.displayName || 'No Name'}
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
