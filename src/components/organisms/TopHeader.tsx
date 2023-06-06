@@ -13,8 +13,17 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useRouter } from 'next/router';
 import { auth } from '../../../firebase';
-import { onAuthStateChanged, onIdTokenChanged, signOut } from 'firebase/auth';
+import { onAuthStateChanged, signOut } from 'firebase/auth';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from '@mui/material';
+import usePostDeletion from '@/hooks/usePostDeletion';
 
 function TopHeader() {
   const router = useRouter();
@@ -24,6 +33,8 @@ function TopHeader() {
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
+  const { openDialog, handleDeleteCancel, handleDeleteClick } =
+    usePostDeletion();
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -51,7 +62,6 @@ function TopHeader() {
     return () => unsubscribe();
   }, []);
 
-
   //ログアウト
 
   const handleLogout = async (e: any) => {
@@ -69,90 +79,94 @@ function TopHeader() {
   };
 
   return (
-    <AppBar position='fixed' sx={{ backgroundColor: '#6699cc' }}>
-      <Container maxWidth='xl'>
-        <Toolbar disableGutters>
-          <Typography
-            variant='h6'
-            noWrap
-            component='a'
-            href='/'
-            sx={{
-              mr: 2,
-              display: { xs: 'none', md: 'flex' },
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            つみあげったー
-          </Typography>
-
-          <Typography
-            variant='h5'
-            noWrap
-            component='a'
-            href=''
-            sx={{
-              mr: 2,
-              display: { xs: 'flex', md: 'none' },
-              flexGrow: 1,
-              fontFamily: 'monospace',
-              fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
-            }}
-          >
-            つみあげったー
-          </Typography>
-
-          <Box
-            sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}
-          >
-            <Tooltip title='プロフィール'>
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar sx={{ bgcolor: 'lightblue' }} aria-label='recipe' src={photoURL }>
-                  
-                </Avatar>
-              </IconButton>
-            </Tooltip>
-            <Menu
-              sx={{ mt: '45px' }}
-              id='menu-appbar'
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+    <>
+      <AppBar position='fixed' sx={{ backgroundColor: '#6699cc' }}>
+        <Container maxWidth='xl'>
+          <Toolbar disableGutters>
+            <Typography
+              variant='h6'
+              noWrap
+              component='a'
+              href='/'
+              sx={{
+                mr: 2,
+                display: { xs: 'none', md: 'flex' },
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
               }}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={Boolean(anchorElUser)}
-              onClose={handleCloseUserMenu}
             >
-              <Box>
-                <MenuItem onClick={handleSettings}>
-                  <SettingsIcon sx={{ mr: 2 }} /> 設定
-                </MenuItem>
-                <MenuItem >
-                  <PersonRemoveIcon sx={{ mr: 2 }} />
-                  アカウント削除
-                </MenuItem>
-                <MenuItem onClick={handleLogout}>
-                  <LogoutIcon sx={{ mr: 2 }} />
-                  ログアウト
-                </MenuItem>
-              </Box>
-            </Menu>
-          </Box>
-        </Toolbar>
-      </Container>
-    </AppBar>
+              つみあげったー
+            </Typography>
+
+            <Typography
+              variant='h5'
+              noWrap
+              component='a'
+              href=''
+              sx={{
+                mr: 2,
+                display: { xs: 'flex', md: 'none' },
+                flexGrow: 1,
+                fontFamily: 'monospace',
+                fontWeight: 700,
+                letterSpacing: '.3rem',
+                color: 'inherit',
+                textDecoration: 'none',
+              }}
+            >
+              つみあげったー
+            </Typography>
+
+            <Box
+              sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end' }}
+            >
+              <Tooltip title='プロフィール'>
+                <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
+                  <Avatar
+                    sx={{ bgcolor: 'lightblue' }}
+                    aria-label='recipe'
+                    src={photoURL}
+                  ></Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                sx={{ mt: '45px' }}
+                id='menu-appbar'
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                keepMounted
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
+                open={Boolean(anchorElUser)}
+                onClose={handleCloseUserMenu}
+              >
+                <Box>
+                  <MenuItem onClick={handleSettings}>
+                    <SettingsIcon sx={{ mr: 2 }} /> 設定
+                  </MenuItem>
+                  <MenuItem onClick={() => handleDeleteClick(users)}>
+                    <PersonRemoveIcon sx={{ mr: 2 }} />
+                    アカウント削除
+                  </MenuItem>
+                  <MenuItem onClick={handleLogout}>
+                    <LogoutIcon sx={{ mr: 2 }} />
+                    ログアウト
+                  </MenuItem>
+                </Box>
+              </Menu>
+            </Box>
+          </Toolbar>
+        </Container>
+      </AppBar>
+    </>
   );
 }
 export default TopHeader;

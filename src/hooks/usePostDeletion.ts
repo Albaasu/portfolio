@@ -16,14 +16,13 @@ const usePostDeletion = () => {
       const postRef = doc(db, 'posts', selectedPost.id);
       await deleteDoc(postRef);
       setOpenDialog(false);
-    } catch (error) {
-      console.error('Error deleting post', error);
-    }
+    } catch (error) {console.log(error)}
   };
 
   const handleDeleteCancel = () => {
     setOpenDialog(false);
   };
+  
 
   return {
     selectedPost,
