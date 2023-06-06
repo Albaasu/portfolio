@@ -1,4 +1,4 @@
-import React, {  useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
@@ -9,17 +9,15 @@ import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db, storage } from '../../../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 
-
 const TweetArea = () => {
   const [fileUrl, setFileUrl] = useState<string>('');
   const MAX_CHARACTERS = 500; // 最大文字数の設定
   const [detail, setDetail] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const user = auth.currentUser;
-  const photoURL = user?.photoURL ||"";
+  const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
-
 
   const handleImageArea = (e: any) => {
     if (e.target.files[0]) {
@@ -72,7 +70,6 @@ const TweetArea = () => {
     }
   };
 
-
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
       <Card sx={{ minWidth: 700, maxWidth: 700, width: '100%' }}>
@@ -89,9 +86,7 @@ const TweetArea = () => {
                   sx={{ bgcolor: 'lightblue' }}
                   aria-label='recipe'
                   src={photoURL}
-                >
-                  
-                </Avatar>
+                ></Avatar>
               }
               title={user?.displayName}
             />
@@ -102,7 +97,7 @@ const TweetArea = () => {
             <TextField
               value={detail}
               onChange={(e) => setDetail(e.target.value)}
-              placeholder='お前今日なにしたんだよ'
+              placeholder='今日の積み上げ'
               variant='outlined'
               fullWidth
               multiline

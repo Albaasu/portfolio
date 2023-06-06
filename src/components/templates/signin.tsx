@@ -7,10 +7,10 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { signInWithEmailAndPassword } from 'firebase/auth';
-import { auth } from '../../firebase';
+import { auth } from '../../../firebase';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
-import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
+import { loginEmailState, loginPasswordState } from '../../Recoil/Atom';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
 
