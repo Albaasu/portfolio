@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -13,8 +12,7 @@ import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
 import { loginEmailState, loginPasswordState } from '../Recoil/Atom';
 import MediButton from '@/components/atoms/MediButton';
-import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
-import MediTextAreaPass from '@/components/atoms/MediTextAreaPass';
+import MediTextArea from '@/components/atoms/MediTextArea';
 
 export default function Signin() {
   const [error, setError] = useState('');
@@ -54,11 +52,13 @@ export default function Signin() {
           ログイン
         </Typography>
         <Box component='form' noValidate sx={{ mt: 1 }}>
-          <MediTextAreaEmail
+          <MediTextArea
+            type='email'
             onChange={(e: any) => setLoginEmail(e.target.value)}
-          ></MediTextAreaEmail>
+          ></MediTextArea>
 
-          <MediTextAreaPass
+          <MediTextArea
+            type='password'
             onChange={(e: any) => setLoginPassword(e.target.value)}
           />
 

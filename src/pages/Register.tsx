@@ -14,9 +14,7 @@ import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../firebase';
 import { useState } from 'react';
 import MediButton from '@/components/atoms/MediButton';
-
-import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
-import MediTextAreaPass from '@/components/atoms/MediTextAreaPass';
+import MediTextArea from '@/components/atoms/MediTextArea';
 
 export default function Signin() {
   const router = useRouter();
@@ -65,11 +63,13 @@ export default function Signin() {
           新規登録
         </Typography>
         <Box component='form' noValidate sx={{ mt: 1 }}>
-          <MediTextAreaEmail
+          <MediTextArea
+          type='email'
             onChange={(e: any) => setRegisterEmail(e.target.value)}
-          ></MediTextAreaEmail>
+          ></MediTextArea>
 
-          <MediTextAreaPass
+          <MediTextArea
+            type='password'
             onChange={(e: any) => setRegisterPassword(e.target.value)}
           />
 

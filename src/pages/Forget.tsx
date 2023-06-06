@@ -3,7 +3,6 @@ import { useState } from 'react';
 import Avatar from '@mui/material/Avatar';
 import Alert from '@mui/material/Alert';
 import CssBaseline from '@mui/material/CssBaseline';
-import TextField from '@mui/material/TextField';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -16,7 +15,6 @@ import { auth } from '../../firebase';
 import { useRouter } from 'next/router';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
-import MediTextAreaEmail from '@/components/atoms/MediTetxAreaEmail';
 
 const theme = createTheme({
   palette: {
@@ -71,10 +69,10 @@ export default function Forget() {
             パスワード再設定
           </Typography>
           <Box component='form' noValidate sx={{ mt: 1 }}>
-          <MediTextAreaEmail
-          
-          onChange={(e: any) => setEmail(e.target.value)}
-        ></MediTextAreaEmail>
+            <MediTextArea
+              type='email'
+              onChange={(e: any) => setEmail(e.target.value)}
+            ></MediTextArea>
             {error && (
               <Alert severity='error'>
                 メールアドレスに送信できませんでした

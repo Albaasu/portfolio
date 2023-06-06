@@ -1,9 +1,12 @@
 import { TextField } from '@mui/material'
 import React from 'react'
+import { auth } from '../../../firebase'
 
 const MediTextArea = (props:any) => {
-    const {name,value,type,label,id,autoComplete,sx} = props
+  const user = auth.currentUser
+    const {name,value,type,label,id,sx} = props
     
+
   return (
     <TextField
     sx={sx}
@@ -11,11 +14,11 @@ const MediTextArea = (props:any) => {
     required
     fullWidth
     autoFocus
-    name={name}
-    label={label}
+    name={props.type ==="email" ? "email" : props.type ==="password" ? "password" : ""}
+    label={props.type ==="email" ? "メールアドレス" : props.type ==="password" ? "パスワード" : user?.displayName }
     type={type}
     id={id}
-    autoComplete={autoComplete}
+    autoComplete={`current-${props.type}`}
     value={value}
     onChange={props.onChange}
   />
