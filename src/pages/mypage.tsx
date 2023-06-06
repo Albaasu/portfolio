@@ -1,15 +1,33 @@
-import { Inter } from 'next/font/google';
-import Bottombar from '../components/organisms/Bottombar';
+import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '../components/organisms/TopHeader';
+import { auth } from '../../firebase';
+import { Box, Container, Stack } from '@mui/material';
+import FavoritePosts from '@/components/molecules/FavoritePosts';
+import MypagePosts from '@/components/molecules/MypagePosts';
 
-const inter = Inter({ subsets: ['latin'] });
 
 export default function Mypage() {
+  const user = auth.currentUser;
+
   return (
     <>
+    <Box sx={{pt:"4rem"}}>
       <TopHeader />
-      <div style={{ marginTop: '64px' }}>マイページ</div>
+      <Box sx={{ pt: 1 }}>
+        <Container
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+          >
+          <Stack spacing={2}>
+            <MypagePosts />
+          </Stack>
+        </Container>
+      </Box>
       <Bottombar />
-    </>
+    </Box>
+          </>
   );
 }
