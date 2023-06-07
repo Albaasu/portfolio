@@ -1,15 +1,22 @@
-import { TextField } from '@mui/material'
+import { SxProps, TextField } from '@mui/material'
 import React from 'react'
 import { auth } from '../../../firebase'
 
-const MediTextArea = (props:any) => {
+interface Props {
+  type: string 
+  sx?: SxProps
+  label?: string
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}
+
+
+const MediTextArea = (props:Props) => {
   const user = auth.currentUser
-    const {name,value,type,label,id,sx} = props
-    
+    const {type} = props
 
   return (
     <TextField
-    sx={sx}
+    sx={props.sx}
     margin="normal"
     required
     fullWidth
@@ -17,9 +24,7 @@ const MediTextArea = (props:any) => {
     name={props.type ==="email" ? "email" : props.type ==="password" ? "password" : ""}
     label={props.type ==="email" ? "メールアドレス" : props.type ==="password" ? "パスワード" : user?.displayName }
     type={type}
-    id={id}
     autoComplete={`current-${props.type}`}
-    value={value}
     onChange={props.onChange}
   />
   )

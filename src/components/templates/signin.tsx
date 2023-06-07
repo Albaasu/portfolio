@@ -54,12 +54,12 @@ export default function Signin() {
         <Box component='form' noValidate sx={{ mt: 1 }}>
           <MediTextArea
             type='email'
-            onChange={(e: any) => setLoginEmail(e.target.value)}
+            onChange={(e) => setLoginEmail(e.target.value)}
           ></MediTextArea>
 
           <MediTextArea
             type='password'
-            onChange={(e: any) => setLoginPassword(e.target.value)}
+            onChange={(e) => setLoginPassword(e.target.value)}
           />
 
           {error && (

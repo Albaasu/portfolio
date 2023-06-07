@@ -71,7 +71,7 @@ export default function Forget() {
           <Box component='form' noValidate sx={{ mt: 1 }}>
             <MediTextArea
               type='email'
-              onChange={(e: any) => setEmail(e.target.value)}
+              onChange={(e) => setEmail(e.target.value)}
             ></MediTextArea>
             {error && (
               <Alert severity='error'>

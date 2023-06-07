@@ -64,13 +64,13 @@ export default function Signin() {
         </Typography>
         <Box component='form' noValidate sx={{ mt: 1 }}>
           <MediTextArea
-          type='email'
-            onChange={(e: any) => setRegisterEmail(e.target.value)}
+            type='email'
+            onChange={(e) => setRegisterEmail(e.target.value)}
           ></MediTextArea>
 
           <MediTextArea
             type='password'
-            onChange={(e: any) => setRegisterPassword(e.target.value)}
+            onChange={(e) => setRegisterPassword(e.target.value)}
           />
 
           {error && (

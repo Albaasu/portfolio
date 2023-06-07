@@ -8,6 +8,7 @@ import { updateProfile } from 'firebase/auth';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
 
+
 const Settings = () => {
   const user: any = auth.currentUser;
   const [userName, setUserName] = useState(user?.displayName || '');
@@ -88,10 +89,11 @@ const Settings = () => {
           </label>
           <div>
             <MediTextArea
+            type='text'
               sx={{ width: '300px', my: 2 }}
               label={user?.displayName || 'No Name'}
-              value={userName}
-              onChange={(e: any) => setUserName(e.target.value)}
+              
+              onChange={(e) => setUserName(e.target.value)}
             ></MediTextArea>
           </div>
           {completed && <Alert severity='success'>{completed}</Alert>}
