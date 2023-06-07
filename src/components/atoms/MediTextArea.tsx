@@ -12,11 +12,11 @@ interface Props {
 
 const MediTextArea = (props:Props) => {
   const user = auth.currentUser
-    const {type} = props
+    const {type,sx} = props
 
   return (
     <TextField
-    sx={props.sx}
+    sx={sx}
     margin="normal"
     required
     fullWidth
