@@ -8,7 +8,6 @@ import { updateProfile } from 'firebase/auth';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
 
-
 const Settings = () => {
   const user: any = auth.currentUser;
   const [userName, setUserName] = useState(user?.displayName || '');
@@ -27,8 +26,6 @@ const Settings = () => {
 
     return () => unsubscribe();
   }, []);
-
-  console.log(user);
 
   const handleUpdateProfile = () => {
     if (userName.trim() !== '') {
@@ -89,10 +86,9 @@ const Settings = () => {
           </label>
           <div>
             <MediTextArea
-            type='text'
+              type='text'
               sx={{ width: '300px', my: 2 }}
               label={user?.displayName || 'No Name'}
-              
               onChange={(e) => setUserName(e.target.value)}
             ></MediTextArea>
           </div>

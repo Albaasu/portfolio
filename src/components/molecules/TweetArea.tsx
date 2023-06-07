@@ -21,6 +21,7 @@ const TweetArea = () => {
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
 
 
+
   const handleImageArea = (e: any) => {
     if (e.target.files[0]) {
       setImageFile(e.target.files[0]);
@@ -38,7 +39,7 @@ const TweetArea = () => {
   }, []);
 
   // firebaseにdetail追加
-  const addPosts = async (e: any) => {
+  const addPosts = async (e:any) => {
     e.preventDefault();
     if (detail.trim() === '') return;
     let processedDetail = detail.trim(); // 文字列の前後の空白を削除
