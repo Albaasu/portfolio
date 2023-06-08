@@ -10,11 +10,12 @@ import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
 import { registerEmailState } from '../Recoil/Atom';
 import { registerPasswordState } from '../Recoil/Atom';
-import { User, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import {  createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase';
 import { useState } from 'react';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
+
 
 
 
