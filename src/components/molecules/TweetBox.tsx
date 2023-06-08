@@ -127,6 +127,7 @@ export default function TweetBox() {
       {posts.map((post: any) => {
         const isCurrentUserPost = post.uid === user?.uid;
         const postDisplayName = isCurrentUserPost ? displayName : post.userName;
+        const postPhotoURL = isCurrentUserPost ? photoURL : post.avatar;
 
         return (
           <Box
@@ -145,7 +146,7 @@ export default function TweetBox() {
                   <Avatar
                     sx={{ bgcolor: 'lightblue' }}
                     aria-label='recipe'
-                    src={photoURL}
+                    src={postPhotoURL}
                   ></Avatar>
                 }
                 action={

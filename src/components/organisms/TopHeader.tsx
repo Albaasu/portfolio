@@ -29,9 +29,10 @@ function TopHeader() {
   const router = useRouter();
   const user = auth.currentUser;
   const [loginState, setLoginState] = useState<any>(null);
-  const photoURL = user?.photoURL || '';
+
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
   const [users, setUsers] = useState<any>(null);
+  const avatar = user?.photoURL || '';
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
   const { openDialog, handleDeleteCancel, handleDeleteClick } =
     usePostDeletion();
@@ -128,7 +129,7 @@ function TopHeader() {
                   <Avatar
                     sx={{ bgcolor: 'lightblue' }}
                     aria-label='recipe'
-                    src={photoURL}
+                    src={avatar}
                   ></Avatar>
                 </IconButton>
               </Tooltip>

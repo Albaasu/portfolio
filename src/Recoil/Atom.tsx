@@ -27,3 +27,8 @@ export const likedState = atom<boolean>({
   key: 'likedState',
   default: false,
 });
+
+export const registerUserNameState = atom<string>({
+  key: 'registerUserNameState',
+  default: '',
+});

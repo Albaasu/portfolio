@@ -8,20 +8,19 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { registerEmailState } from '../Recoil/Atom';
+import { registerEmailState, registerUserNameState } from '../Recoil/Atom';
 import { registerPasswordState } from '../Recoil/Atom';
-import {  createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
 import { auth, db } from '../../firebase';
 import { useState } from 'react';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
 
-
-
-
 export default function Signin() {
   const router = useRouter();
 
+  const [registerUserName, setRegisterUserName] =
+    useRecoilState<string>(registerUserNameState);
   const [registerEmail, setRegisterEmail] =
     useRecoilState<string>(registerEmailState);
 
@@ -35,16 +34,30 @@ export default function Signin() {
   const addUser = async (e: any) => {
     e.preventDefault();
 
+    if (
+      registerUserName.trim() === '' ||
+      registerEmail.trim() === '' ||
+      registerPassword.trim() === ''
+    ) {
+      setError('入力してください');
+      return;
+    }
+
     try {
-      await createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
         auth,
         registerEmail,
         registerPassword
       );
+
+      await updateProfile(user, {
+        displayName: registerUserName,
+      });
+
       setRegisterEmail('');
       setRegisterPassword('');
-      const user:any = auth.currentUser;
-      updateProfile(user,{displayName:"No Name"})
+      setRegisterUserName('');
+      alert('登録完了しました');
       router.push('/');
     } catch (error) {
       setError('正しく入力してください');
@@ -67,6 +80,10 @@ export default function Signin() {
         <Typography component='h1' variant='h5'>
           新規登録
         </Typography>
+        <MediTextArea
+          type='text'
+          onChange={(e) => setRegisterUserName(e.target.value)}
+        />
         <Box component='form' noValidate sx={{ mt: 1 }}>
           <MediTextArea
             type='email'
