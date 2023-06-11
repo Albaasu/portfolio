@@ -1,18 +1,23 @@
-import { Button } from '@mui/material';
-import React from 'react';
+import { Button, SxProps } from '@mui/material';
+import React, { MouseEvent } from 'react';
+import { ReactNode } from 'react';
 
-const MediButton = (props: any) => {
-  const { children ,sx} = props;
+interface Props {
+  sx?: SxProps;
+  children: ReactNode;
+  onClick?: (e: MouseEvent<HTMLInputElement>) => Promise<void>;
+}
 
+const MediButton = (props: Props) => {
   return (
     <Button
       type='submit'
       fullWidth
       variant='outlined'
-      sx={sx}
-      onClick={props.onClick}
+      sx={props.sx}
+      onClick={() => props.onClick}
     >
-      {children}
+      {props.children}
     </Button>
   );
 };

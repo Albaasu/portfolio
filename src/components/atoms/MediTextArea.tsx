@@ -12,18 +12,18 @@ interface Props {
 
 const MediTextArea = (props:Props) => {
   const user = auth.currentUser
-    const {type,sx} = props
+
 
   return (
     <TextField
-    sx={sx}
+    sx={props.sx}
     margin="normal"
     required
     fullWidth
     autoFocus
     name={props.type ==="email" ? "email" : props.type ==="password" ? "password" : ""}
     label={props.type ==="email" ? "メールアドレス" : props.type ==="password" ? "パスワード" : user?.displayName ?user?.displayName : "ユーザー名"}
-    type={type}
+    type={props.type}
     autoComplete={`current-${props.type}`}
     onChange={props.onChange}
   />

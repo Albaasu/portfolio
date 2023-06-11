@@ -34,6 +34,7 @@ import {
 import { auth, db } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import usePostDeletion from '../../hooks/usePostDeletion';
+import { Post } from '@/types/type';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -52,7 +53,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 export default function TweetBox() {
-  const [posts, setPosts] = useState<any[]>([]);
+  const [posts, setPosts] = useState<Post[]>([]);
   const [user] = useAuthState(auth);
   //名前がないときはNo Name
   const displayName = user?.displayName || 'No Name';
@@ -102,7 +103,7 @@ export default function TweetBox() {
           return {
             ...data,
             id: doc.id,
-          };
+          }as Post;
         })
       );
     });
@@ -124,7 +125,7 @@ export default function TweetBox() {
 
   return (
     <>
-      {posts.map((post: any) => {
+      {posts.map((post: Post) => {
         const isCurrentUserPost = post.uid === user?.uid;
 
 
@@ -185,7 +186,7 @@ export default function TweetBox() {
                   aria-label='いいね'
                   onClick={() => handleFavo(post.id)}
                 >
-                  {post.likes.includes(user?.uid) ? (
+                  {post.likes.includes(user!.uid) ? (
                     <FavoriteIcon sx={{ color: red[500] }} />
                   ) : (
                     <FavoriteBorderIcon />

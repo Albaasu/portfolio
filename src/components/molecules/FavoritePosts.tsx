@@ -148,7 +148,7 @@ export default function FavoritePosts() {
                     <Avatar
                       sx={{ bgcolor: 'lightblue' }}
                       aria-label='recipe'
-                      src={photoURL}
+                      src={post.avatar}
                     ></Avatar>
                   }
                   action={
