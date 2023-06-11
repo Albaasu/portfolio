@@ -54,7 +54,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function TweetBox() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [user] = useAuthState(auth);
+  const [user] :any= useAuthState(auth);
   //名前がないときはNo Name
   const displayName = user?.displayName || 'No Name';
   //画像がないときは適当な画像
@@ -186,7 +186,7 @@ export default function TweetBox() {
                   aria-label='いいね'
                   onClick={() => handleFavo(post.id)}
                 >
-                  {post.likes.includes(user!.uid) ? (
+                  {post.likes.includes(user?.uid) ? (
                     <FavoriteIcon sx={{ color: red[500] }} />
                   ) : (
                     <FavoriteBorderIcon />
