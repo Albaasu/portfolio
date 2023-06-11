@@ -56,7 +56,7 @@ const Settings = () => {
   };
 
   // ユーザー更新
-  const handleUpdateProfile = async () => {
+  const handleUpdateProfile = async () :Promise<void> => {
     if (!userName) {
       setErrorName("ユーザー名を入力してください");
       return;
