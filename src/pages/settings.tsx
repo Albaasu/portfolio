@@ -3,16 +3,18 @@ import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '@/components/organisms/TopHeader';
 import { TextField, Avatar, Box, Alert } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
-import { auth, storage } from '../../firebase';
+import { auth, db, storage } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
 import MediButton from '@/components/atoms/MediButton';
 import MediTextArea from '@/components/atoms/MediTextArea';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
+import { collection, doc, getDocs, query, updateDoc, where } from 'firebase/firestore';
 
 const Settings = () => {
   const user: any = auth.currentUser;
   const [userName, setUserName] = useState(user?.displayName || '');
-  const photoURL = user?.photoURL || '';
+
+  const [photoUrl, setPhotoUrl] = useState(user?.photoURL || '');
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
   const [completed, setCompleted] = useState<string | null>(null);
@@ -39,46 +41,54 @@ const Settings = () => {
     }
   };
 
-  // ユーザー更新
-  const handleUpdateProfile = () => {
-    if (userName.trim() !== '') {
-      updateProfile(user, { displayName: userName })
-        .then(() => {
-          setUserName('');
-          if (selectedImage) {
-            setCompleted('ユーザー名を更新しました\n画像を更新しました');
-          } else {
-            setCompleted('ユーザー名を更新しました');
-          }
-        })
-        .catch((error) => {
-          setUserName('');
-          setErrorName('ユーザー名を更新できませんでした');
+  const updateAllPost = async () => {
+    // postsコレクションのドキュメントの中でuidがログインユーザーのuidと一致するものを取得
+    const q = query(collection(db, "posts"), where("uid", "==", user.uid));
+    const querySnapshot = await getDocs(q);
+    querySnapshot.forEach((doc) => {
+      if (doc.exists()) {
+        updateDoc(doc.ref, {
+          userName: user.displayName,
+          avatar: user.photoURL,
         });
-    }
-
-    if (selectedImage) {
-      // 画像をアップロード
-      const storageRef = ref(storage, `userImage/${selectedImage.name}`);
-      uploadBytes(storageRef, selectedImage)
-        .then(() => {
-          return getDownloadURL(storageRef);
-        })
-        .then((downloadURL) => {
-          // photoURLを更新
-          updateProfile(user, { photoURL: downloadURL });
-          if (userName.trim() !== '') {
-            setCompleted('ユーザー名を更新しました\n画像を更新しました');
-          } else {
-            setCompleted('画像を更新しました');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+      }
+    });
   };
 
+  // ユーザー更新
+  const handleUpdateProfile = async () => {
+    if (!userName) {
+      setErrorName("ユーザー名を入力してください");
+      return;
+    }
+    if (userName && selectedImage) {
+      const storageRef = ref(storage, `users/${user.uid}/profile.jpg`);
+      await uploadBytes(storageRef, selectedImage);
+      const url = await getDownloadURL(storageRef);
+      await updateProfile(user, {
+        displayName: userName,
+        photoURL: url,
+      });
+      await updateAllPost();
+      setCompleted("プロフィールを更新しました");
+    } else if (userName && !selectedImage) {
+      await updateProfile(user, {
+        displayName: userName,
+      });
+      await updateAllPost();
+
+      setCompleted("プロフィールを更新しました");
+    } else if (!userName && selectedImage) {
+      const storageRef = ref(storage, `users/${user.uid}/profile.jpg`);
+      await uploadBytes(storageRef, selectedImage);
+      const url = await getDownloadURL(storageRef);
+      await updateProfile(user, {
+        photoURL: url,
+      });
+      await updateAllPost();
+      setCompleted("プロフィールを更新しました");
+    }
+  };
   return (
     <>
       <TopHeader />
@@ -107,7 +117,7 @@ const Settings = () => {
               onChange={handleImageChange}
             />
             <Avatar
-              src={previewImage || photoURL}
+              src={previewImage || photoUrl}
               sx={{
                 width: '100px',
                 height: '100px',
