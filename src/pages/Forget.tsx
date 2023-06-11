@@ -45,10 +45,6 @@ export default function Forget() {
     }
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    handlePasswordReset(e);
-  };
 
   return (
     <ThemeProvider theme={theme}>
