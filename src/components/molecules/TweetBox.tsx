@@ -110,15 +110,16 @@ export default function TweetBox() {
   }, []);
 
   const formatText = (text: string) => {
+    if (text === null || text === undefined) {
+      return ''; // もしくは適切なデフォルト値を返す
+    }
     return text.split('\n').map((line, index) => (
       <Typography
-        variant='subtitle1'
-        color='.MuiTab-labelIcon'
-        sx={{ px: 3 }}
         key={index}
+        variant='subtitle1'
+        color='textPrimary'
       >
         {line}
-        <br />
       </Typography>
     ));
   };

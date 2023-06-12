@@ -1,4 +1,4 @@
-import React, {  useEffect,useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
@@ -8,7 +8,8 @@ import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual
 import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 import { auth, db, storage } from '../../../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
-
+import Image from 'next/image';
+import CancelIcon from '@mui/icons-material/Cancel';
 
 const TweetArea = () => {
   const [fileUrl, setFileUrl] = useState<string>('');
@@ -16,15 +17,20 @@ const TweetArea = () => {
   const [detail, setDetail] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const user = auth.currentUser;
-  const photoURL = user?.photoURL ||"";
+  const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
 
-
+  // 画像をキャンセル
+  const handleCancelImage = () => {
+    setFileUrl('');
+    setImageFile(null);
+  };
 
   const handleImageArea = (e: any) => {
     if (e.target.files[0]) {
       setImageFile(e.target.files[0]);
+      setFileUrl(URL.createObjectURL(e.target.files[0])); // プレビュー用のURLを設定
       e.target.value = '';
     }
   };
@@ -39,9 +45,8 @@ const TweetArea = () => {
   }, []);
 
   // firebaseにdetail追加
-  const addPosts = async (e:any) => {
+  const addPosts = async (e: any) => {
     e.preventDefault();
-    if (detail.trim() === '') return;
     let processedDetail = detail.trim(); // 文字列の前後の空白を削除
     if (processedDetail.endsWith('\n')) {
       // 改行が文末にある場合、改行を削除
@@ -58,7 +63,7 @@ const TweetArea = () => {
       }
 
       await addDoc(collection(db, 'posts'), {
-        detail: processedDetail,
+        detail: processedDetail || null,
         userName: user?.displayName,
         avatar: user?.photoURL,
         timestamp: serverTimestamp(),
@@ -68,11 +73,11 @@ const TweetArea = () => {
       });
 
       setDetail('');
+      setFileUrl(''); // 送信後にプレビューをクリア
     } catch (error) {
       console.log(error);
     }
   };
-
 
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
@@ -90,9 +95,7 @@ const TweetArea = () => {
                   sx={{ bgcolor: 'lightblue' }}
                   aria-label='recipe'
                   src={photoURL}
-                >
-                  
-                </Avatar>
+                ></Avatar>
               }
               title={user?.displayName ? user?.displayName : 'No Name'}
             />
@@ -138,6 +141,14 @@ const TweetArea = () => {
                 }}
               />
             </label>
+            {fileUrl && (
+              <Box sx={{ margin: '0.5rem 0', textAlign: 'center' }}>
+                <IconButton aria-label='キャンセル' onClick={handleCancelImage}>
+                  <CancelIcon sx={{ color: 'red' }} />
+                </IconButton>
+                <Image src={fileUrl} alt='Preview' width={300} height={300} />
+              </Box>
+            )}
           </Box>
         </FormControl>
       </Card>
