@@ -2,7 +2,6 @@ import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '../components/organisms/TopHeader';
 import { auth } from '../../firebase';
 import { Box, Container, Stack } from '@mui/material';
-import FavoritePosts from '@/components/molecules/FavoritePosts';
 import MypagePosts from '@/components/molecules/MypagePosts';
 
 

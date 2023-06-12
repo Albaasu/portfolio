@@ -109,7 +109,7 @@ export default function MypagePosts() {
   }, []);
 
   const formatText = (text: string) => {
-    return text.split('\n').map((line, index) => (
+    return text?.split('\n').map((line, index) => (
       <Typography
         variant='subtitle1'
         color='.MuiTab-labelIcon'
