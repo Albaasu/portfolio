@@ -13,6 +13,7 @@ import CancelIcon from '@mui/icons-material/Cancel';
 
 const TweetArea = () => {
   const [fileUrl, setFileUrl] = useState<string>('');
+  const [previewImage, setPreviewImage] = useState<string>('');
   const MAX_CHARACTERS = 500; // 最大文字数の設定
   const [detail, setDetail] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -23,17 +24,17 @@ const TweetArea = () => {
 
   // 画像をキャンセル
   const handleCancelImage = () => {
-    setFileUrl('');
+    setPreviewImage('');
     setImageFile(null);
   };
 
   const handleImageArea = (e: any) => {
     if (e.target.files[0]) {
       setImageFile(e.target.files[0]);
-      setFileUrl(URL.createObjectURL(e.target.files[0])); // プレビュー用のURLを設定
-      e.target.value = '';
+      setPreviewImage(URL.createObjectURL(e.target.files[0])); // プレビュー用のURLを設定
     }
   };
+
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -44,40 +45,54 @@ const TweetArea = () => {
     return () => unsubscribe();
   }, []);
 
-  // firebaseにdetail追加
-  const addPosts = async (e: any) => {
-    e.preventDefault();
-    let processedDetail = detail.trim(); // 文字列の前後の空白を削除
-    if (processedDetail.endsWith('\n')) {
-      // 改行が文末にある場合、改行を削除
-      while (processedDetail.endsWith('\n')) {
-        processedDetail = processedDetail.slice(0, -1);
-      }
+ // firebaseにdetail追加
+const addPosts = async (e: any) => {
+  e.preventDefault();
+  
+  if (detail.trim() === '' && !imageFile) {
+    // detailが空欄でかつ画像がない場合は投稿不可
+    return;
+  }
+  
+  let processedDetail = detail.trim();
+  if (processedDetail.endsWith('\n')) {
+    while (processedDetail.endsWith('\n')) {
+      processedDetail = processedDetail.slice(0, -1);
     }
-    try {
-      if (imageFile) {
-        const storageRef = ref(storage, `images/${imageFile.name}`);
-        await uploadBytes(storageRef, imageFile);
-        const downloadURL = await getDownloadURL(storageRef);
-        setFileUrl(downloadURL);
-      }
+  }
+  
+  try {
+    let downloadURL = '';
 
-      await addDoc(collection(db, 'posts'), {
-        detail: processedDetail || null,
-        userName: user?.displayName,
-        avatar: user?.photoURL,
-        timestamp: serverTimestamp(),
-        imageUrl: fileUrl,
-        likes: [],
-        uid: user?.uid,
-      });
-
-      setDetail('');
-      setFileUrl(''); // 送信後にプレビューをクリア
-    } catch (error) {
-      console.log(error);
+    if (imageFile) {
+      const storageRef = ref(storage, `images/${imageFile.name}`);
+      await uploadBytes(storageRef, imageFile);
+      downloadURL = await getDownloadURL(storageRef);
     }
-  };
+
+    const docRef = await addDoc(collection(db, 'posts'), {
+      detail: processedDetail || null,
+      userName: user?.displayName,
+      avatar: user?.photoURL,
+      timestamp: serverTimestamp(),
+      imageUrl: downloadURL,
+      likes: [],
+      uid: user?.uid,
+    });
+
+    setDetail('');
+    setFileUrl('');
+    setImageFile(null);
+    setPreviewImage('');
+
+    console.log('Created document with ID: ', docRef.id);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+
+
 
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
@@ -141,12 +156,12 @@ const TweetArea = () => {
                 }}
               />
             </label>
-            {fileUrl && (
+            {previewImage && (
               <Box sx={{ margin: '0.5rem 0', textAlign: 'center' }}>
                 <IconButton aria-label='キャンセル' onClick={handleCancelImage}>
                   <CancelIcon sx={{ color: 'red' }} />
                 </IconButton>
-                <Image src={fileUrl} alt='Preview' width={300} height={300} />
+                <Image src={previewImage} alt='Preview' width={300} height={300} />
               </Box>
             )}
           </Box>

@@ -35,6 +35,7 @@ import { auth, db } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import usePostDeletion from '../../hooks/usePostDeletion';
 import { Post } from '@/types/type';
+import Link from 'next/link';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -54,7 +55,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 export default function TweetBox() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const [user] :any= useAuthState(auth);
+  const [user]: any = useAuthState(auth);
   //名前がないときはNo Name
   const displayName = user?.displayName || 'No Name';
   //画像がないときは適当な画像
@@ -103,7 +104,7 @@ export default function TweetBox() {
           return {
             ...data,
             id: doc.id,
-          }as Post;
+          } as Post;
         })
       );
     });
@@ -114,11 +115,7 @@ export default function TweetBox() {
       return ''; // もしくは適切なデフォルト値を返す
     }
     return text.split('\n').map((line, index) => (
-      <Typography
-        key={index}
-        variant='subtitle1'
-        color='textPrimary'
-      >
+      <Typography key={index} variant='subtitle1' color='textPrimary'>
         {line}
       </Typography>
     ));
@@ -128,7 +125,6 @@ export default function TweetBox() {
     <>
       {posts.map((post: Post) => {
         const isCurrentUserPost = post.uid === user?.uid;
-
 
         return (
           <Box

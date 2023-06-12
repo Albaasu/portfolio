@@ -109,7 +109,7 @@ export default function FavoritePosts() {
   }, []);
 
   const formatText = (text: string) => {
-    return text.split('\n').map((line, index) => (
+    return text?.split('\n').map((line, index) => (
       <Typography
         variant='subtitle1'
         color='.MuiTab-labelIcon'
@@ -124,7 +124,6 @@ export default function FavoritePosts() {
 
   return (
     <>
-    
       {posts.map((post: any) => {
         const isCurrentUserPost = post.uid === user?.uid;
         const postDisplayName = isCurrentUserPost ? displayName : post.userName;
