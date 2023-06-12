@@ -58,7 +58,7 @@ const Settings = () => {
   // ユーザー更新
   const handleUpdateProfile = async () :Promise<void> => {
     if (!userName) {
-      setErrorName("ユーザー名を入力してください");
+
       return;
     }
     if (userName && selectedImage) {

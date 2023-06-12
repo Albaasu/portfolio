@@ -1,8 +1,11 @@
+import { useRouter } from 'next/router'
 import React from 'react'
 
 const CommentPosts = () => {
+  const router = useRouter()
+  const { id } = router.query
   return (
-    <div>ComentPosts</div>
+    <div>{id}</div>
   )
 }
 

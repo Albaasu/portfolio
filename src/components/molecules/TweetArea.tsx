@@ -35,7 +35,6 @@ const TweetArea = () => {
     }
   };
 
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
       setUsers(user);
@@ -45,54 +44,51 @@ const TweetArea = () => {
     return () => unsubscribe();
   }, []);
 
- // firebaseにdetail追加
-const addPosts = async (e: any) => {
-  e.preventDefault();
-  
-  if (detail.trim() === '' && !imageFile) {
-    // detailが空欄でかつ画像がない場合は投稿不可
-    return;
-  }
-  
-  let processedDetail = detail.trim();
-  if (processedDetail.endsWith('\n')) {
-    while (processedDetail.endsWith('\n')) {
-      processedDetail = processedDetail.slice(0, -1);
-    }
-  }
-  
-  try {
-    let downloadURL = '';
+  // firebaseにdetail追加
+  const addPosts = async (e: any) => {
+    e.preventDefault();
 
-    if (imageFile) {
-      const storageRef = ref(storage, `images/${imageFile.name}`);
-      await uploadBytes(storageRef, imageFile);
-      downloadURL = await getDownloadURL(storageRef);
+    if (detail.trim() === '' && !imageFile) {
+      // detailが空欄でかつ画像がない場合は投稿不可
+      return;
     }
 
-    const docRef = await addDoc(collection(db, 'posts'), {
-      detail: processedDetail || null,
-      userName: user?.displayName,
-      avatar: user?.photoURL,
-      timestamp: serverTimestamp(),
-      imageUrl: downloadURL,
-      likes: [],
-      uid: user?.uid,
-    });
+    let processedDetail = detail.trim();
+    if (processedDetail.endsWith('\n')) {
+      while (processedDetail.endsWith('\n')) {
+        processedDetail = processedDetail.slice(0, -1);
+      }
+    }
 
-    setDetail('');
-    setFileUrl('');
-    setImageFile(null);
-    setPreviewImage('');
+    try {
+      let downloadURL = '';
 
-    console.log('Created document with ID: ', docRef.id);
-  } catch (error) {
-    console.log(error);
-  }
-};
+      if (imageFile) {
+        const storageRef = ref(storage, `images/${imageFile.name}`);
+        await uploadBytes(storageRef, imageFile);
+        downloadURL = await getDownloadURL(storageRef);
+      }
 
+      const docRef = await addDoc(collection(db, 'posts'), {
+        detail: processedDetail || null,
+        userName: user?.displayName,
+        avatar: user?.photoURL,
+        timestamp: serverTimestamp(),
+        imageUrl: downloadURL,
+        likes: [],
+        uid: user?.uid,
+      });
 
+      setDetail('');
+      setFileUrl('');
+      setImageFile(null);
+      setPreviewImage('');
 
+      console.log('Created document with ID: ', docRef.id);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
@@ -161,7 +157,12 @@ const addPosts = async (e: any) => {
                 <IconButton aria-label='キャンセル' onClick={handleCancelImage}>
                   <CancelIcon sx={{ color: 'red' }} />
                 </IconButton>
-                <Image src={previewImage} alt='Preview' width={300} height={300} />
+                <Image
+                  src={previewImage}
+                  alt='Preview'
+                  width={300}
+                  height={300}
+                />
               </Box>
             )}
           </Box>

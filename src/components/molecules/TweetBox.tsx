@@ -36,6 +36,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import usePostDeletion from '../../hooks/usePostDeletion';
 import { Post } from '@/types/type';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -60,6 +61,7 @@ export default function TweetBox() {
   const displayName = user?.displayName || 'No Name';
   //画像がないときは適当な画像
   const photoURL = user?.photoURL || '';
+const router = useRouter();
 
   // いいね色
   const handleFavo = async (postId: string) => {
@@ -121,6 +123,11 @@ export default function TweetBox() {
     ));
   };
 
+  //コメント
+  const handleComment = (id:string) => {
+router.push(id);
+  };
+
   return (
     <>
       {posts.map((post: Post) => {
@@ -176,7 +183,7 @@ export default function TweetBox() {
                 />
               )}
               <CardActions disableSpacing>
-                <IconButton aria-label='コメント' sx={{ mx: 2 }}>
+                <IconButton aria-label='コメント' sx={{ mx: 2 }} onClick={()=>handleComment(post.id)}>
                   <ChatBubbleIcon />
                 </IconButton>
                 <IconButton
