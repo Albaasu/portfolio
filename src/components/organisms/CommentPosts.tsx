@@ -1,10 +1,11 @@
-import { useRouter } from 'next/router';
+import { Post } from '@/types/type';
 import React, { useEffect, useState } from 'react';
-import { auth, db } from '../../../firebase';
 
-const CommentPosts = (posts:string) => {
-  
-  return <div>{id}</div>;
+
+
+const CommentPosts = (props: Post) => {
+
+  return <div style={{ marginTop: '64px' }}>{props.detail}</div>;
 };
 
 export default CommentPosts;
