@@ -5,7 +5,13 @@ import Avatar from '@mui/material/Avatar';
 import { Box, FormControl, IconButton, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
-import { addDoc, collection, doc, serverTimestamp, updateDoc } from 'firebase/firestore';
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from 'firebase/firestore';
 import { auth, db, storage } from '../../../firebase';
 import { getDownloadURL, ref, uploadBytes } from 'firebase/storage';
 import Image from 'next/image';
@@ -21,7 +27,6 @@ const TweetArea = () => {
   const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
-
 
   // 画像をキャンセル
   const handleCancelImage = () => {
@@ -85,8 +90,6 @@ const TweetArea = () => {
       setFileUrl('');
       setImageFile(null);
       setPreviewImage('');
-
-      console.log('Created document with ID: ', docRef.id);
     } catch (error) {
       console.log(error);
     }

@@ -3,9 +3,10 @@ import React from 'react'
 import { auth } from '../../../firebase'
 
 interface Props {
-  type: string 
+  type?: string 
   sx?: SxProps
   label?: string
+  value?: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
@@ -18,6 +19,7 @@ const MediTextArea = (props:Props) => {
     <TextField
     sx={props.sx}
     margin="normal"
+    value={props.value}
     required
     fullWidth
     autoFocus
