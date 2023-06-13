@@ -1,15 +1,10 @@
-import { doc, setDoc } from 'firebase/firestore'
-import { useRouter } from 'next/router'
-import React from 'react'
-import { db } from '../../../firebase'
+import { useRouter } from 'next/router';
+import React, { useEffect, useState } from 'react';
+import { auth, db } from '../../../firebase';
 
-const CommentPosts = () => {
+const CommentPosts = (posts:string) => {
+  
+  return <div>{id}</div>;
+};
 
-  const router = useRouter()
-  const { id } = router.query
-  return (
-    <div>{id}</div>
-  )
-}
-
-export default CommentPosts
+export default CommentPosts;
