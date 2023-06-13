@@ -58,7 +58,7 @@ const Settings = () => {
   // ユーザー更新
   const handleUpdateProfile = async () :Promise<void> => {
     if (!userName) {
-
+setUserName(user.displayName)
       return;
     }
     if (userName && selectedImage) {
