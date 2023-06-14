@@ -1,7 +1,7 @@
 import { Box, Container, Stack } from '@mui/material';
 import React from 'react';
-import TweetBox from './TweetBox';
-import TweetAera from './TweetArea';
+import TweetBox from '../molecules/TweetBox';
+import TweetAera from '../molecules/TweetArea';
 
 const Timeline = () => {
   return (
