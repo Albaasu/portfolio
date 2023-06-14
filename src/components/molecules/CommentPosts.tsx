@@ -115,8 +115,7 @@ const CommentPosts = (props: Post) => {
 
   useEffect(() => {
     const postsRef = collection(db, `posts/${props.id}/comments`);
-    const q = query(postsRef, orderBy('timestamp', 'desc'));
-
+    const q = query(postsRef, orderBy('timestamp', 'desc'))
     onSnapshot(q, (querySnapshot) => {
       setRepComment(
         querySnapshot.docs.map((doc) => {
