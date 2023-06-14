@@ -38,13 +38,16 @@ import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { red } from '@mui/material/colors';
-import usePostDeletion from '@/hooks/usePostDeletion';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 interface Comment {
+  avatar: string | undefined;
+  userName: any;
+  likes: any;
   detail: string;
   timestamp: any;
   id: string;
+  uid: string;
 }
 
 const CommentPosts = (props: Post) => {
@@ -56,6 +59,8 @@ const CommentPosts = (props: Post) => {
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
   };
+  
+
 
   const handleFavo = async (postId: string) => {
     try {
@@ -82,6 +87,9 @@ const CommentPosts = (props: Post) => {
 
   const isCurrentUserPost = user?.uid === props.uid;
 
+
+  
+
   const formatText = (text: string) => {
     if (text === null || text === undefined) {
       return ''; // もしくは適切なデフォルト値を返す
@@ -98,9 +106,12 @@ const CommentPosts = (props: Post) => {
       const commentsCollection = collection(db, `posts/${props.id}/comments`);
       const newComment = {
         detail: comment,
+        avatar: photoURL,
+        userName: user?.displayName,
         timestamp: serverTimestamp(),
         id: uuidv4(),
         likes: [],
+        uid: user?.uid,
       };
       await addDoc(commentsCollection, newComment);
 
@@ -115,7 +126,7 @@ const CommentPosts = (props: Post) => {
 
   useEffect(() => {
     const postsRef = collection(db, `posts/${props.id}/comments`);
-    const q = query(postsRef, orderBy('timestamp', 'desc'))
+    const q = query(postsRef, orderBy('timestamp', 'desc'));
     onSnapshot(q, (querySnapshot) => {
       setRepComment(
         querySnapshot.docs.map((doc) => {
@@ -242,10 +253,56 @@ const CommentPosts = (props: Post) => {
             </Box>
           </FormControl>
         </Card>
-        {repComment.map((comment) => (
-          <div key={comment.id}>{comment.detail}</div>
-        ))}
       </Box>
+      {repComment.map((comment) => (
+        <>
+          <Box
+            sx={{
+              backgroundColor: '#f1f1f1',
+              padding: '1rem',
+              maxWidth: 733,
+              minWidth: 733,
+            }}
+            key={comment.id}
+          >
+            <Card>
+              <CardHeader
+                sx={{ marginBottom: -2 }}
+                avatar={
+                  <Avatar
+                    sx={{ bgcolor: 'lightblue' }}
+                    aria-label='recipe'
+                    src={comment.avatar}
+                  ></Avatar>
+                }
+                action={
+                  isCurrentUserPost ? (
+                    <IconButton aria-label='settings'>
+                      <DeleteIcon sx={{ color: red[500] }} />
+                    </IconButton>
+                  ) : null
+                }
+                title={comment.userName}
+                subheader={comment.timestamp?.toDate().toLocaleString()}
+              />
+              <CardContent>{formatText(comment.detail)}</CardContent>
+
+              <CardActions disableSpacing>
+                <IconButton aria-label='いいね'>
+                  {comment.likes.includes(user?.uid) ? (
+                    <FavoriteIcon sx={{ color: red[500] }} />
+                  ) : (
+                    <FavoriteBorderIcon />
+                  )}
+                </IconButton>
+                <Typography>{comment.likes.length}</Typography>
+              </CardActions>
+            </Card>
+          </Box>
+
+
+        </>
+      ))}
     </>
   );
 };

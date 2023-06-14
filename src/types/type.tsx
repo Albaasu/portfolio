@@ -1,4 +1,5 @@
 export type Post = {
+  comments: Comment[];
   id: string;
   detail: string;
   avatar: string;
