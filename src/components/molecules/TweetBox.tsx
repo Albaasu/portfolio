@@ -36,6 +36,8 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import usePostDeletion from '../../hooks/usePostDeletion';
 import { Post } from '@/types/type';
 import { useRouter } from 'next/router';
+import CommentViwe from '../atoms/CommentView';
+import CommentView from '../atoms/CommentView';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -184,16 +186,15 @@ export default function TweetBox() {
               <CardActions disableSpacing>
                 <IconButton
                   aria-label='コメント'
-                  sx={{ mx: 2 }}
                   onClick={() => handleComment(post.id)}
                 >
                   <ChatBubbleIcon />
                 </IconButton>
+                <CommentView postId={post.id} />
                 <IconButton
                   aria-label='いいね'
                   onClick={() => handleFavo(post.id)}
                 >
-
                   {post.likes.includes(user?.uid) ? (
                     <FavoriteIcon sx={{ color: red[500] }} />
                   ) : (

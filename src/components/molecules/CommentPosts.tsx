@@ -73,27 +73,6 @@ const CommentPosts = (props: Post) => {
     handleDeleteCancel,
   } = useCommentDelete();
 
-  //コメントのいいね
-  const handleCommentFavo = async (postId: string) => {
-    try {
-      const postRef = doc(db, 'posts', postId);
-      const commentRef = doc(db, 'posts', postId, 'comments');
-      const postSnapshot = await getDoc(commentRef);
-
-      if (postSnapshot.exists()) {
-        const commentLikes = postSnapshot.data().likes;
-        const newCommentLikes = commentLikes.includes(user?.uid)
-          ? commentLikes.filter((uid: string) => uid !== user?.uid)
-          : [...commentLikes, user?.uid];
-
-        await updateDoc(postRef, {
-          likes: newCommentLikes,
-        });
-      }
-    } catch (error) {
-      console.error('投稿の更新エラー:', error);
-    }
-  };
 
   //元投稿いいね
   const handleFavo = async (postId: string) => {
@@ -313,16 +292,7 @@ const CommentPosts = (props: Post) => {
               />
 
               <CardContent>{formatText(comment.detail)}</CardContent>
-              <CardActions disableSpacing>
-                <IconButton aria-label='いいね'>
-                  {comment.likes.includes(user?.uid) ? (
-                    <FavoriteIcon sx={{ color: red[500] }} />
-                  ) : (
-                    <FavoriteBorderIcon />
-                  )}
-                </IconButton>
-                <Typography>{comment.likes.length}</Typography>
-              </CardActions>
+              
             </Card>
 
       <Dialog open={openDialog} onClose={handleDeleteCancel}>
