@@ -193,6 +193,7 @@ export default function TweetBox() {
                   aria-label='いいね'
                   onClick={() => handleFavo(post.id)}
                 >
+
                   {post.likes.includes(user?.uid) ? (
                     <FavoriteIcon sx={{ color: red[500] }} />
                   ) : (

@@ -1,29 +1,27 @@
 import { useState } from 'react';
-import { doc, deleteDoc, collection, query, getDocs, where } from 'firebase/firestore';
+import { doc, deleteDoc, collection, query, getDocs, where, getDoc } from 'firebase/firestore';
 import { db } from '../../firebase';
-import { Post } from '@/types/type';
+
+
+
 
 const usePostDeletion = () => {
   const [selectedPost, setSelectedPost] = useState<any>(null);
   const [openDialog, setOpenDialog] = useState(false);
 
-  const handleDeleteClick = (post: Post) => {
+  const handleDeleteClick = (post: any) => {
     setSelectedPost(post);
     setOpenDialog(true);
   };
 
-  const handleDeleteConfirm = async () => {
+  const handleDeleteConfirm = async (postId:string) => {
     try {
-      // 元の投稿を削除
-      const postRef = doc(db, 'posts', selectedPost.id);
+     
+      // サブコレクションのコメントを削除
+      const postRef = doc(db, `posts/${postId}/comments/${selectedPost.id}`);
       await deleteDoc(postRef);
 
-      // サブコレクションのコメントを削除
-      const commentsRef = collection(postRef, 'comments');
-      const querySnapshot = await getDocs(commentsRef);
-      querySnapshot.forEach(async (doc) => {
-        await deleteDoc(doc.ref);
-      });
+     
 
       setOpenDialog(false);
     } catch (error) {

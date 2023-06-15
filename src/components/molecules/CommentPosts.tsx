@@ -8,6 +8,9 @@ import {
   doc,
   getDoc,
   updateDoc,
+  Timestamp,
+  where,
+  deleteDoc,
 } from 'firebase/firestore';
 import { auth, db } from '../../../firebase';
 import { Post } from '@/types/type';
@@ -18,16 +21,16 @@ import {
   Avatar,
   Box,
   Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardHeader,
-  CardMedia,
   Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  CardMedia,
   FormControl,
   IconButton,
   TextField,
@@ -39,6 +42,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { red } from '@mui/material/colors';
 import { useAuthState } from 'react-firebase-hooks/auth';
+import useCommentDelete from '@/hooks/useCommentDelete';
 
 interface Comment {
   avatar: string | undefined;
@@ -59,9 +63,39 @@ const CommentPosts = (props: Post) => {
   const handleCommentChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setComment(e.target.value);
   };
-  
 
+  //コメント削除
+  const {
+    selectedPost,
+    openDialog,
+    handleDeleteClick,
+    handleDeleteConfirm,
+    handleDeleteCancel,
+  } = useCommentDelete();
 
+  //コメントのいいね
+  const handleCommentFavo = async (postId: string) => {
+    try {
+      const postRef = doc(db, 'posts', postId);
+      const commentRef = doc(db, 'posts', postId, 'comments');
+      const postSnapshot = await getDoc(commentRef);
+
+      if (postSnapshot.exists()) {
+        const commentLikes = postSnapshot.data().likes;
+        const newCommentLikes = commentLikes.includes(user?.uid)
+          ? commentLikes.filter((uid: string) => uid !== user?.uid)
+          : [...commentLikes, user?.uid];
+
+        await updateDoc(postRef, {
+          likes: newCommentLikes,
+        });
+      }
+    } catch (error) {
+      console.error('投稿の更新エラー:', error);
+    }
+  };
+
+  //元投稿いいね
   const handleFavo = async (postId: string) => {
     try {
       const postRef = doc(db, 'posts', postId);
@@ -83,12 +117,7 @@ const CommentPosts = (props: Post) => {
     }
   };
 
-  const handleDeleteCommentClick = async (props: Post) => {};
-
   const isCurrentUserPost = user?.uid === props.uid;
-
-
-  
 
   const formatText = (text: string) => {
     if (text === null || text === undefined) {
@@ -109,14 +138,14 @@ const CommentPosts = (props: Post) => {
         avatar: photoURL,
         userName: user?.displayName,
         timestamp: serverTimestamp(),
-        id: uuidv4(),
         likes: [],
         uid: user?.uid,
       };
-      await addDoc(commentsCollection, newComment);
+     const docRef= await addDoc(commentsCollection, newComment);
+      await updateDoc(doc(docRef.parent, docRef.id), { id: docRef.id });
 
       // コメント追加後にrepCommentを更新
-      setRepComment((prevComments) => [newComment, ...prevComments]);
+      // setRepComment((prevComments) => [newComment, ...prevComments]);
 
       setComment('');
     } catch (error) {
@@ -160,16 +189,6 @@ const CommentPosts = (props: Post) => {
                 aria-label='recipe'
                 src={props.avatar}
               ></Avatar>
-            }
-            action={
-              isCurrentUserPost ? (
-                <IconButton
-                  aria-label='settings'
-                  onClick={() => handleDeleteCommentClick(props)}
-                >
-                  <DeleteIcon sx={{ color: red[500] }} />
-                </IconButton>
-              ) : null
             }
             title={props.userName}
             subheader={props.timestamp?.toDate().toLocaleString()}
@@ -277,16 +296,23 @@ const CommentPosts = (props: Post) => {
                 }
                 action={
                   isCurrentUserPost ? (
-                    <IconButton aria-label='settings'>
+                    <IconButton
+                      aria-label='settings'
+                      onClick={()=>handleDeleteClick(comment)}
+                    >
                       <DeleteIcon sx={{ color: red[500] }} />
                     </IconButton>
                   ) : null
                 }
                 title={comment.userName}
-                subheader={comment.timestamp?.toDate().toLocaleString()}
+                subheader={
+                  comment.timestamp instanceof Timestamp
+                    ? comment.timestamp.toDate().toLocaleString()
+                    : ''
+                }
               />
-              <CardContent>{formatText(comment.detail)}</CardContent>
 
+              <CardContent>{formatText(comment.detail)}</CardContent>
               <CardActions disableSpacing>
                 <IconButton aria-label='いいね'>
                   {comment.likes.includes(user?.uid) ? (
@@ -298,9 +324,20 @@ const CommentPosts = (props: Post) => {
                 <Typography>{comment.likes.length}</Typography>
               </CardActions>
             </Card>
+
+      <Dialog open={openDialog} onClose={handleDeleteCancel}>
+        <DialogTitle>投稿の削除</DialogTitle>
+        <DialogContent>
+          <DialogContentText>本当にこの投稿を削除しますか？</DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleDeleteCancel}>キャンセル</Button>
+          <Button onClick={()=>handleDeleteConfirm(props.id)} color='error'>
+            はい
+          </Button>
+        </DialogActions>
+      </Dialog>
           </Box>
-
-
         </>
       ))}
     </>

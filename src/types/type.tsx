@@ -11,3 +11,14 @@ export type Post = {
   commentRef:string[]
 };
 
+
+export type repComment = {
+  avatar: string | undefined;
+  userName: any;
+  likes: any;
+  detail: string;
+  timestamp: any;
+  id: string;
+  uid: string;
+  commentRef:string[]
+}
