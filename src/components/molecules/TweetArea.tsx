@@ -97,7 +97,7 @@ const TweetArea = () => {
 
   return (
     <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
-      <Card sx={{ minWidth: 700, maxWidth: 700, width: '100%' }}>
+      <Card sx={{ minWidth: "100%", maxWidth: "100%", width: '100%' }}>
         <CardHeader
           sx={{
             display: 'flex',
