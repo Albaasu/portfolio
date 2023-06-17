@@ -7,7 +7,7 @@ import CommentPosts from '@/components/molecules/CommentPosts';
 import { db } from '../../firebase';
 import TopHeader from '@/components/organisms/TopHeader';
 import Bottombar from '@/components/organisms/Bottombar';
-import { Box, Container, Stack } from '@mui/material';
+import { Box, CircularProgress, Container, Stack } from '@mui/material';
 
 
 const CommentPage = () => {
@@ -50,7 +50,10 @@ const CommentPage = () => {
           }}
         >
           <Stack spacing={2}>
-            {post ? <CommentPosts {...post} /> : <div>Loading...</div>}
+            {post ? <CommentPosts {...post} /> :    <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+
+<CircularProgress />
+</div>}
           </Stack>
         </Container>
       <Bottombar />

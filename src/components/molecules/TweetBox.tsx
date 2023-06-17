@@ -101,6 +101,7 @@ export default function TweetBox() {
     const q = query(postsRef, orderBy('timestamp', 'desc'));
 
     onSnapshot(q, (querySnapshot) => {
+
       setPosts(
         querySnapshot.docs.map((doc) => {
           const data = doc.data();
@@ -110,6 +111,7 @@ export default function TweetBox() {
           } as Post;
         })
       );
+      
     });
   }, []);
 

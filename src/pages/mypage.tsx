@@ -1,17 +1,40 @@
 import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '../components/organisms/TopHeader';
 import { auth } from '../../firebase';
-import { Box, Container, Stack } from '@mui/material';
+import { Box, CircularProgress, Container, Stack } from '@mui/material';
 import MypagePosts from '@/components/molecules/MypagePosts';
+import { useEffect, useState } from 'react';
 
 
 export default function Mypage() {
   const user = auth.currentUser;
+  const [users, setUsers] = useState<any>(null);
+  const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
+  const [isLoading, setIsLoading] = useState(true);
+
+  
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsLoading(true);
+      setUsers(user);
+      setUserLoaded(true);
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <>
-    <Box sx={{pt:"4rem"}}>
+<Box sx={{pt:"4rem"}}>
       <TopHeader />
+{isLoading ? (
+   <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+
+   <CircularProgress />
+   </div>
+   ) : 
+   (
       <Box sx={{ pt: 1 }}>
         <Container
           sx={{
@@ -24,9 +47,14 @@ export default function Mypage() {
             <MypagePosts />
           </Stack>
         </Container>
-      </Box>
-      <Bottombar />
     </Box>
+   )
+   
+  }
+  </Box>
+  <Bottombar />
+
+    
           </>
   );
 }

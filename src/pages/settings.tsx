@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Bottombar from '@/components/organisms/Bottombar';
 import TopHeader from '@/components/organisms/TopHeader';
-import { TextField, Avatar, Box, Alert } from '@mui/material';
+import { TextField, Avatar, Box, Alert, CircularProgress } from '@mui/material';
 import AddPhotoAlternateIcon from '@mui/icons-material/AddPhotoAlternate';
 import { auth, db, storage } from '../../firebase';
 import { updateProfile } from 'firebase/auth';
@@ -22,11 +22,14 @@ const Settings = () => {
   const [userNoname, setUserNoname] = useState<string | null>(null);
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsLoading(true);
       setUsers(user);
       setUserLoaded(true);
+      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -91,7 +94,17 @@ setUserName(user.displayName)
   };
   return (
     <>
-      <TopHeader />
+        <TopHeader />
+    {isLoading?
+      (
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+        <CircularProgress />
+        </div>
+      )
+    :
+    (
+      <>
+
       <Box
         sx={{
           marginTop: '64px',
@@ -133,7 +146,7 @@ setUserName(user.displayName)
               <AddPhotoAlternateIcon />
             </Avatar>
           </label>
-
+  
           <div>
             <MediTextArea
               type='text'
@@ -157,7 +170,10 @@ setUserName(user.displayName)
           </div>
         </Box>
       </Box>
-      <Bottombar />
+</>
+    )
+  }
+  <Bottombar />
     </>
   );
 };

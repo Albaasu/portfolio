@@ -15,14 +15,7 @@ import { useRouter } from 'next/router';
 import { auth } from '../../../firebase';
 import { onAuthStateChanged, signOut } from 'firebase/auth';
 import PersonRemoveIcon from '@mui/icons-material/PersonRemove';
-import {
-  Button,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from '@mui/material';
+
 import usePostDeletion from '@/hooks/usePostDeletion';
 
 function TopHeader() {
@@ -36,6 +29,7 @@ function TopHeader() {
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
   const { openDialog, handleDeleteCancel, handleDeleteClick } =
     usePostDeletion();
+const [isLoading, setIsLoading] = useState(true);
 
   const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElUser(event.currentTarget);
@@ -56,8 +50,10 @@ function TopHeader() {
   //ユーザー情報
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsLoading(true);
       setUsers(user);
       setUserLoaded(true);
+      setIsLoading(false);
     });
 
     return () => unsubscribe();

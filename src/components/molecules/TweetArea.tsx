@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
-import { Box, FormControl, IconButton, TextField } from '@mui/material';
+import { Box, CircularProgress, FormControl, IconButton, TextField } from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import {
@@ -24,9 +24,11 @@ const TweetArea = () => {
   const [detail, setDetail] = useState('');
   const [imageFile, setImageFile] = useState<File | null>(null);
   const user = auth.currentUser;
-  const photoURL = user?.photoURL || '';
   const [users, setUsers] = useState<any>(null);
+  const photoURL = users?.photoURL || '';
   const [userLoaded, setUserLoaded] = useState(false); // ユーザーが読み込まれたかどうかのフラグ
+
+  const [isLoading, setIsLoading] = useState(true);
 
   // 画像をキャンセル
   const handleCancelImage = () => {
@@ -43,8 +45,10 @@ const TweetArea = () => {
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
+      setIsLoading(true);
       setUsers(user);
       setUserLoaded(true);
+      setIsLoading(false);
     });
 
     return () => unsubscribe();
@@ -96,84 +100,96 @@ const TweetArea = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
-      <Card sx={{ minWidth: 700, maxWidth: 700, width: '100%' }}>
-        <CardHeader
-          sx={{
-            display: 'flex',
-            alignItems: 'center',
-            marginBottom: -3, // アバターアイコンとの間隔
-          }}
-          title={
+    <>
+      {isLoading ? (
+        <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
+
+        <CircularProgress />
+        </div>
+      ) : (
+        <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
+          <Card sx={{ minWidth: 700, maxWidth: 700, width: '100%' }}>
             <CardHeader
-              avatar={
-                <Avatar
-                  sx={{ bgcolor: 'lightblue' }}
-                  aria-label='recipe'
-                  src={photoURL}
-                ></Avatar>
-              }
-              title={user?.displayName ? user?.displayName : 'No Name'}
-            />
-          }
-        />
-        <FormControl fullWidth>
-          <Box sx={{ marginX: 2, my: 1 }}>
-            <TextField
-              value={detail}
-              onChange={(e) => setDetail(e.target.value)}
-              placeholder='今日の積み上げ'
-              variant='outlined'
-              fullWidth
-              multiline
-              InputProps={{
-                sx: { paddingTop: 0.5, paddingBottom: 0.5 }, // 上下の余白を調整
-                endAdornment: (
-                  <IconButton aria-label='送信' onClick={addPosts}>
-                    <SendIcon sx={{ color: 'skyblue' }} />
-                  </IconButton>
-                ),
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                marginBottom: -3, // アバターアイコンとの間隔
               }}
-              inputProps={{ maxLength: MAX_CHARACTERS }} // 最大文字数
-            />
-            <label htmlFor='file'>
-              <input
-                type='file'
-                name='file'
-                id='file'
-                style={{ display: 'none' }}
-                onChange={handleImageArea}
-              />
-              <PhotoSizeSelectActualIcon
-                sx={{
-                  color: 'skyblue',
-                  '&:hover': {
-                    transform: 'scale(1.1)',
-                    transition: '0.3s',
-                  },
-                  mt: 2,
-                  ml: 2,
-                  mb: 1,
-                }}
-              />
-            </label>
-            {previewImage && (
-              <Box sx={{ margin: '0.5rem 0', textAlign: 'center' }}>
-                <IconButton aria-label='キャンセル' onClick={handleCancelImage}>
-                  <CancelIcon sx={{ color: 'red' }} />
-                </IconButton>
-                <Image
-                  src={previewImage}
-                  alt='Preview'
-                  width={300}
-                  height={300}
+              title={
+                <CardHeader
+                  avatar={
+                    <Avatar
+                      sx={{ bgcolor: 'lightblue' }}
+                      aria-label='recipe'
+                      src={photoURL}
+                    ></Avatar>
+                  }
+                  title={user?.displayName ? user?.displayName : 'No Name'}
                 />
+              }
+            />
+            <FormControl fullWidth>
+              <Box sx={{ marginX: 2, my: 1 }}>
+                <TextField
+                  value={detail}
+                  onChange={(e) => setDetail(e.target.value)}
+                  placeholder='今日の積み上げ'
+                  variant='outlined'
+                  fullWidth
+                  multiline
+                  InputProps={{
+                    sx: { paddingTop: 0.5, paddingBottom: 0.5 }, // 上下の余白を調整
+                    endAdornment: (
+                      <IconButton aria-label='送信' onClick={addPosts}>
+                        <SendIcon sx={{ color: 'skyblue' }} />
+                      </IconButton>
+                    ),
+                  }}
+                  inputProps={{ maxLength: MAX_CHARACTERS }} // 最大文字数
+                />
+                <label htmlFor='file'>
+                  <input
+                    type='file'
+                    name='file'
+                    id='file'
+                    style={{ display: 'none' }}
+                    onChange={handleImageArea}
+                  />
+                  <PhotoSizeSelectActualIcon
+                    sx={{
+                      color: 'skyblue',
+                      '&:hover': {
+                        transform: 'scale(1.1)',
+                        transition: '0.3s',
+                      },
+                      mt: 2,
+                      ml: 2,
+                      mb: 1,
+                    }}
+                  />
+                </label>
+                {previewImage && (
+                  <Box sx={{ margin: '0.5rem 0', textAlign: 'center' }}>
+                    <IconButton
+                      aria-label='キャンセル'
+                      onClick={handleCancelImage}
+                    >
+                      <CancelIcon sx={{ color: 'red' }} />
+                    </IconButton>
+                    <Image
+                      src={previewImage}
+                      alt='Preview'
+                      width={300}
+                      height={300}
+                    />
+                  </Box>
+                )}
               </Box>
-            )}
-          </Box>
-        </FormControl>
-      </Card>
-    </Box>
+            </FormControl>
+          </Card>
+        </Box>
+      )}
+    </>
   );
 };
 
