@@ -2,7 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import Avatar from '@mui/material/Avatar';
-import { Box, CircularProgress, FormControl, IconButton, TextField } from '@mui/material';
+import {
+  Box,
+  CircularProgress,
+  FormControl,
+  IconButton,
+  TextField,
+} from '@mui/material';
 import SendIcon from '@mui/icons-material/Send';
 import PhotoSizeSelectActualIcon from '@mui/icons-material/PhotoSizeSelectActual';
 import {
@@ -103,12 +109,11 @@ const TweetArea = () => {
     <>
       {isLoading ? (
         <div className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'>
-
-        <CircularProgress />
+          <CircularProgress />
         </div>
       ) : (
-        <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' }}>
-          <Card sx={{ minWidth: 700, maxWidth: 700, width: '100%' }}>
+        <Box sx={{ backgroundColor: '#f1f1f1', padding: '1rem' ,}}>
+          <Card sx={{ minWidth: 700, maxWidth: 700, width: '100%'  ,}}>
             <CardHeader
               sx={{
                 display: 'flex',

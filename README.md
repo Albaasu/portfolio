@@ -1,38 +1,68 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# shiwake(収支管理アプリ)
+![画面収録_2023-01-15_12_28_04_AdobeExpress](https://user-images.githubusercontent.com/64601252/212523632-10560fca-b556-4001-ae9a-67247dec304c.gif)
 
-## Getting Started
+## アプリ URL
+https://shiwake.vercel.app/
 
-First, run the development server:
+## アプリ概要
+日々の収支を簡単に登録できる仕訳け管理アプリです。
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+## アプリを作成した背景
+個人事業主で日々の業務の傍ら収支管理に関してはどうしても後回しになってしまいがちでした。
+いつもギリギリになりまとめて作業をする際に、毎回勘定科目や仕訳け方法などを調べて直して作業をするのが面倒でどうにかルーティン化させて毎年の確定申告を楽にしたいと考えたのが開発のきっかけです。
+shiwakeは「とにかくシンプルに収支の管理ができるように」を意識して作成しました。
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## テスト用アカウント
+* メールアドレス：test@test.com
+* パスワード　　：testuser
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+## 利用方法
+| トップページ  | サインアップ | ログイン |
+| ------------- | ------------- | ------------- |
+| ![スクリーンショット 2023-01-15 13 26 21](https://user-images.githubusercontent.com/64601252/212522881-86954589-e8ce-4daa-8ea5-6ced5c0d2aa7.png)  | ![スクリーンショット 2023-01-15 13 32 02](https://user-images.githubusercontent.com/64601252/212523025-d0fe51ed-862a-4a5e-b474-c6726f59abe9.png) | ![スクリーンショット 2023-01-15 13 31 59](https://user-images.githubusercontent.com/64601252/212523016-1dad2726-a243-4fa4-ae50-c2ce6c8fe365.png) |
+| shiwakeのトップページです。 | 新規登録ページです。アイコン画像、ユーザー名、メールアドレス、パスワードを登録します。 | ログインページです。アカウントをお持ちの方はメールアドレス、パスワードを入力しログインします。|
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+| マイページ | メニュー | 使い方 |
+| ------------- | ------------- | ------------- |
+| ![img01](https://user-images.githubusercontent.com/64601252/212523175-4ecd0e9d-ea5e-40d0-95e4-1f79125f57e9.png) | ![img02](https://user-images.githubusercontent.com/64601252/212523185-2d28fd58-ee3b-49b4-b64e-970557d291a4.png) | ![img03](https://user-images.githubusercontent.com/64601252/212523193-8f267235-bd5a-4145-b8f1-92d13a4efed0.png) |
+| マイページトップです。今月の収支合計、アカウント情報などが表示されています。 | ナビゲーションです。 | shiwakeの使い方の説明が記載されています。|
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+| 新規登録 | 仕訳一覧 | 仕訳詳細 |
+| ------------- | ------------- | ------------- |
+| ![img04](https://user-images.githubusercontent.com/64601252/212523237-5c5e014c-6dc3-40b2-ac86-9628f030518b.png) | ![img05](https://user-images.githubusercontent.com/64601252/212523258-13b9e780-4d2b-4d59-adf2-43e0582a549a.png) | ![img06](https://user-images.githubusercontent.com/64601252/212523308-ac26f575-c90e-42a9-8364-ca069c4f0f08.png) |
+| 仕訳けの新規登録画面です。 | 仕訳の一覧が表示されるページです。月別や収入/支出などの絞り込みができます。 | 仕訳の編集を行うページです。 |
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+| 仕訳編集 | レポート |  |
+| ------------- | ------------- | ------------- |
+| ![img07](https://user-images.githubusercontent.com/64601252/212523404-2ef8158d-aa31-42de-9503-5a1ad71e4790.png) | ![img08](https://user-images.githubusercontent.com/64601252/212523412-dd6dde91-dc0a-45cb-b8ee-d8d9d065735c.png) |  |
+| 仕訳の編集を行うページです | 仕訳のグラフレポートが確認できるページです。 |  |
 
-## Learn More
+## 機能一覧
+* 認証（サインアップ/ログイン/ログアウト/パスワードリセット）
+* ユーザー編集（アイコン画像/ユーザーネーム）
+* 収支登録/編集/削除
+* 収支一覧（絞り込み/ページネーション）
+* チャート（グラフデータ）
 
-To learn more about Next.js, take a look at the following resources:
+## 実装予定の機能
+* 試算表の作成
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 開発環境
+### フロントエンド
+* React(v18.2.0)
+* Next.js(v13.0.5)
+* Typescript
+* Recoil
+* chart.js
+* Chakra UI
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### バックエンド
+* Firebase (v9.14.0)
 
-## Deploy on Vercel
+### デプロイ
+* Vercel
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 工夫した点
+* 仕分け一覧で決済/未決済の項目を追加することにより一目で決済処理の有無がわかるように工夫しました。
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+* 西暦年別に月ごとの収支をわかりやすく表示できるようにChart.jsを用いてグラフの実装を行いました。
