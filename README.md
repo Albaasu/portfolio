@@ -41,6 +41,7 @@ https://portfolio-albaasu.vercel.app/
 | コメントページ |  
 | ------------- |
 |![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif) |
+|投稿にコメントを追加することができます。|
 
 ## 機能一覧
 
