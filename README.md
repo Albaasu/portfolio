@@ -31,15 +31,15 @@ https://portfolio-albaasu.vercel.app/
 | ![img01](https://user-images.githubusercontent.com/123563616/246646001-9443d765-ddf0-4884-ae87-73a51ecd0018.png) | ![img02](https://user-images.githubusercontent.com/123563616/246645926-37ac954f-ff43-44d6-96a7-9b0febc31fbc.png) | ![img03](https://user-images.githubusercontent.com/123563616/246645838-d77f9a48-714e-473a-9546-455f8e8cb701.png) |
 | ホームです。自身の投稿や他のユーザーの投稿が表示されています。                                    | プロフィールの編集やログアウトができます。                                                                                            | 過去にいいねした投稿が一覧で表示されています。                                                                      |
 
-| マイページ                                                                                                        | 設定                                                                                                        | コメント                                                                                                        |
+| マイページ                                                                                                        | 設定                                                                                                        | パスワードを忘れた場合                                                                                                        |
 | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| ![img04](https://user-images.githubusercontent.com/123563616/246645891-0bf9a911-87c0-44db-b4fa-4fe1ee80beed.png) | ![img05](https://user-images.githubusercontent.com/123563616/246645906-7ac01980-6f52-430c-afe3-3c72dea115f3.png) | ![img06]<img src="https://github.com/Albaasu/portfolio/assets/123563616/fb9a2cb6-b8f8-407c-aa0b-339f9954eeaf" width="300"> |
-| 自身が投稿したものを表示しています。                                                                                      | プロフィールの編集画面です。アイコンやユーザーネームを変更できます。                                     | 投稿にコメントを付け表示させることができます                                                                                    |
+| ![img04](https://user-images.githubusercontent.com/123563616/246645891-0bf9a911-87c0-44db-b4fa-4fe1ee80beed.png) | ![img05](https://user-images.githubusercontent.com/123563616/246645906-7ac01980-6f52-430c-afe3-3c72dea115f3.png) | ![img06](https://user-images.githubusercontent.com/123563616/246648714-1e107b0b-4f5a-430c-a4cb-db74d8d1eb30.png) |
+| 自身が投稿したものを表示しています。                                                                                      | プロフィールの編集画面です。アイコンやユーザーネームを変更できます。                                     | パスワードを忘れた場合再発行ができます。                                                                                    |
 
 | 仕訳編集                                                                                                        | レポート                                                                                                        |     |
 | --------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- | --- |
-| ![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif) | ![img08](https://user-images.githubusercontent.com/64601252/212523412-dd6dde91-dc0a-45cb-b8ee-d8d9d065735c.png) |     |
-| 仕訳の編集を行うページです                                                                                      | 投稿にコメントを追加することができます。                                                                    |     |
+| ![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif) |       |
+| 投稿にコメントを付け表示させることができます                                                                                      | 投                                                                  |     |
 
 ## 機能一覧
 
