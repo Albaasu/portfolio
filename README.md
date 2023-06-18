@@ -1,6 +1,6 @@
 # つみあげったー(学習投稿アプリ)
 
-![画面収録_2023-01-15_12_28_04_AdobeExpress](<https://user-images.githubusercontent.com/123563616/246645013-85ff7176-dbf8-4572-8672-bbdbd4a53fed.png>)
+![画面収録_2023-01-15_12_28_04_AdobeExpress](<https://media.giphy.com/media/z6cBbNRHDplQ5ExSuF/giphy.gif>)
 
 ## アプリ URL
 
@@ -40,7 +40,7 @@ https://portfolio-albaasu.vercel.app/
 
 | コメントページ |  
 | ------------- |
-|![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif) |
+|![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif)|
 |投稿にコメントを追加することができます。|
 
 ## 機能一覧
