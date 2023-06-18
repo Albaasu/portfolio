@@ -36,14 +36,11 @@ https://portfolio-albaasu.vercel.app/
 | ![img04](https://user-images.githubusercontent.com/123563616/246645891-0bf9a911-87c0-44db-b4fa-4fe1ee80beed.png) | ![img05](https://user-images.githubusercontent.com/123563616/246645906-7ac01980-6f52-430c-afe3-3c72dea115f3.png) | ![img06](https://user-images.githubusercontent.com/123563616/246648714-1e107b0b-4f5a-430c-a4cb-db74d8d1eb30.png) |
 | 自身が投稿したものを表示しています。                                                                                      | プロフィールの編集画面です。アイコンやユーザーネームを変更できます。                                     | パスワードを忘れた場合再発行ができます。                                                                                    |
 
-| コメント                                                                                                        |                                                                                                       
- | --------------------------------------------------------------------------------------------------------------- | --- |
-| ![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif) |       |
-| 投稿にコメントを付け表示させることができます                                                                                      |                                                                   |     |
+
 
 | コメントページ |  
 | ------------- |
-|<img width="366" alt="コメント" src="(https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif)">|
+|![img07](https://media.giphy.com/media/EGvOmJ9KBwTLxnUH7n/giphy.gif) |
 
 ## 機能一覧
 
