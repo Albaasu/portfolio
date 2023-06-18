@@ -36,7 +36,6 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import usePostDeletion from '../../hooks/usePostDeletion';
 import { Post } from '@/types/type';
 import { useRouter } from 'next/router';
-import CommentViwe from '../atoms/CommentView';
 import CommentView from '../atoms/CommentView';
 
 // IconButtonの拡張コンポーネント

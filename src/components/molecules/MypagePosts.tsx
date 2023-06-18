@@ -34,6 +34,8 @@ import {
 import { auth, db } from '../../../firebase';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import usePostDeletion from '../../hooks/usePostDeletion';
+import { useRouter } from 'next/router';
+import CommentView from '../atoms/CommentView';
 
 // IconButtonの拡張コンポーネント
 interface ExpandMoreProps extends IconButtonProps {
@@ -58,6 +60,13 @@ export default function MypagePosts() {
   const displayName = user?.displayName || 'No Name';
   //画像がないときは適当な画像
   const photoURL = user?.photoURL || '';
+  const router = useRouter();
+
+   //コメント
+   const handleComment = (id: string) => {
+    router.push(id);
+  };
+
 
   // いいね色
   const handleFavo = async (postId: string) => {
@@ -180,9 +189,10 @@ export default function MypagePosts() {
                   />
                 )}
                 <CardActions disableSpacing>
-                  <IconButton aria-label='コメント' sx={{ mx: 2 }}>
+                  <IconButton aria-label='コメント' onClick={() => handleComment(post.id)}>
                     <ChatBubbleIcon />
                   </IconButton>
+                    <CommentView  postId={post.id} />
                   <IconButton
                     aria-label='いいね'
                     onClick={() => handleFavo(post.id)}
